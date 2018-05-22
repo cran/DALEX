@@ -18,7 +18,6 @@ a ggplot2 object
 Function 'plot.variable_response_explainer' plots marginal responses for one or more explainers.
 }
 \examples{
-\dontrun{
 library("breakDown")
 logit <- function(x) exp(x)/(1+exp(x))
 
@@ -27,6 +26,7 @@ explainer_glm <- explain(HR_glm_model, data = HR_data, trans = logit)
 expl_glm <- variable_response(explainer_glm, "satisfaction_level", "pdp", trans=logit)
 plot(expl_glm)
 
+\dontrun{
 library("randomForest")
 HR_rf_model <- randomForest(factor(left)~., data = breakDown::HR_data, ntree = 100)
 explainer_rf  <- explain(HR_rf_model, data = HR_data,

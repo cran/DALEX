@@ -27,7 +27,6 @@
 #'
 #' @aliases single_variable
 #' @examples
-#' \dontrun{
 #' library("breakDown")
 #' logit <- function(x) exp(x)/(1+exp(x))
 #'
@@ -36,6 +35,7 @@
 #' expl_glm <- variable_response(explainer_glm, "satisfaction_level", "pdp")
 #' expl_glm
 #'
+#' \dontrun{
 #' library("randomForest")
 #' HR_rf_model <- randomForest(factor(left)~., data = breakDown::HR_data, ntree = 100)
 #' explainer_rf  <- explain(HR_rf_model, data = HR_data,
@@ -75,16 +75,22 @@ variable_response <- function(explainer, variable, type = "pdp", trans = explain
            res
          },
          pdp = {
-           part <- partial(explainer$model, pred.var = variable, train = explainer$data, ...)
+           # pdp requires predict function with only two arguments
+           predictor_pdp <- function(object, newdata) mean(explainer$predict_function(object, newdata), na.rm = TRUE)
+
+           part <- partial(explainer$model, pred.var = variable, train = explainer$data, ..., pred.fun = predictor_pdp)
            res <- data.frame(x = part[,1], y = trans(part$yhat), var = variable, type = type, label = explainer$label)
            class(res) <- c("variable_response_explainer", "data.frame", "pdp")
            res
          },
          ale = {
+           # pdp requires predict function with only two arguments
+           predictor_ale <- function(X.model, newdata) explainer$predict_function(X.model, newdata)
+
            # need to create a temporary file to stop ALEPlot function from plotting anytihing
            tmpfn <- tempfile()
            pdf(tmpfn)
-           part <- ALEPlot(X = explainer$data, X.model = explainer$model, yhat, J = variable)
+           part <- ALEPlot(X = explainer$data, X.model = explainer$model, J = variable, pred.fun = predictor_ale)
            dev.off()
            unlink(tmpfn)
            res <- data.frame(x = part$x.values, y = trans(part$f.values), var = variable, type = type, label = explainer$label)

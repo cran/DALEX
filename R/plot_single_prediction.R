@@ -17,7 +17,7 @@
 #' @import ggplot2
 #'
 #' @examples
-#' \dontrun{
+#'  \dontrun{
 #' library("breakDown")
 #' new.wine <- data.frame(citric.acid = 0.35,
 #'      sulphates = 0.6,

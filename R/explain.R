@@ -26,6 +26,7 @@
 #' \item \code{label} label, by default it's the last value from the \code{class} vector, but may be set to any character.
 #' }
 #'
+#' @rdname explain
 #' @export
 #' @importFrom stats predict
 #' @importFrom utils head tail
@@ -37,19 +38,24 @@
 #' wine_lm_explainer4 <- explain(wine_lm_model4, data = wine, label = "model_4v")
 #' wine_lm_explainer4
 #'
-#' \dontrun{
+#'  \dontrun{
 #' library("randomForest")
 #' wine_rf_model4 <- randomForest(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine)
 #' wine_rf_explainer4 <- explain(wine_rf_model4, data = wine, label = "model_rf")
 #' wine_rf_explainer4
-#' }
+#'  }
 #'
-explain <- function(model, data = NULL, y = NULL, predict_function = yhat, link = I, ..., label = tail(class(model), 1)) {
+explain.default <- function(model, data = NULL, y = NULL, predict_function = yhat, link = I, ..., label = tail(class(model), 1)) {
   if (is.null(data)) {
     possible_data <- try(model.frame(model), silent = TRUE)
     if (class(possible_data) != "try-error") {
       data <- possible_data
     }
+  }
+
+  # as for issue #15, if data is in the tibble format then needs to be translated to data.frame
+  if ("tbl" %in% class(data)) {
+    data <- as.data.frame(data)
   }
 
   explainer <- list(model = model,
@@ -63,6 +69,10 @@ explain <- function(model, data = NULL, y = NULL, predict_function = yhat, link 
   class(explainer) <- "explainer"
   explainer
 }
+
+#' @export
+#' @rdname explain
+explain <- explain.default
 
 yhat <- function(X.model, newdata, ...) {
   if ("lm" %in% class(X.model)) {

@@ -13,7 +13,6 @@
 #' @importFrom factorMerger getOptimalPartitionDf plotTree plotResponse
 #'
 #' @examples
-#' \dontrun{
 #' library("breakDown")
 #' logit <- function(x) exp(x)/(1+exp(x))
 #'
@@ -22,6 +21,7 @@
 #' expl_glm <- variable_response(explainer_glm, "satisfaction_level", "pdp", trans=logit)
 #' plot(expl_glm)
 #'
+#' \dontrun{
 #' library("randomForest")
 #' HR_rf_model <- randomForest(factor(left)~., data = breakDown::HR_data, ntree = 100)
 #' explainer_rf  <- explain(HR_rf_model, data = HR_data,
