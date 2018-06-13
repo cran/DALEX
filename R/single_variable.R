@@ -35,7 +35,7 @@
 #' expl_glm <- variable_response(explainer_glm, "satisfaction_level", "pdp")
 #' expl_glm
 #'
-#' \dontrun{
+#'  \dontrun{
 #' library("randomForest")
 #' HR_rf_model <- randomForest(factor(left)~., data = breakDown::HR_data, ntree = 100)
 #' explainer_rf  <- explain(HR_rf_model, data = HR_data,
@@ -44,7 +44,8 @@
 #' expl_rf  <- variable_response(explainer_rf, variable = "satisfaction_level", type = "pdp",
 #'                        which.class = 2, prob = TRUE)
 #' expl_rf
-#' }
+#' plot(expl_rf)
+#'  }
 #'
 variable_response <- function(explainer, variable, type = "pdp", trans = explainer$link, ...) {
   if (!("explainer" %in% class(explainer))) stop("The variable_response() function requires an object created with explain() function.")
@@ -78,7 +79,7 @@ variable_response <- function(explainer, variable, type = "pdp", trans = explain
            # pdp requires predict function with only two arguments
            predictor_pdp <- function(object, newdata) mean(explainer$predict_function(object, newdata), na.rm = TRUE)
 
-           part <- partial(explainer$model, pred.var = variable, train = explainer$data, ..., pred.fun = predictor_pdp)
+           part <- partial(explainer$model, pred.var = variable, train = explainer$data, ..., pred.fun = predictor_pdp, recursive = FALSE)
            res <- data.frame(x = part[,1], y = trans(part$yhat), var = variable, type = type, label = explainer$label)
            class(res) <- c("variable_response_explainer", "data.frame", "pdp")
            res
