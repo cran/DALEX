@@ -1,3 +1,8 @@
+DALEX 0.2.4
+----------------------------------------------------------------
+* New dataset `HR` and `HRTest`. Target variable is a factor with three levels. Is used in examples for classification.
+* The `plot.model_performance()` has now `show_outliers` parameter. Set it to anything >0 and observations with largest residuals will be presented in the plot. ([#34](https://github.com/pbiecek/DALEX/issues/34))
+
 DALEX 0.2.3
 ----------------------------------------------------------------
 * Small fixes in `variable_response()` to better support of `gbm` models (c8393120ffb05e2f3c70b0143c4e92dc91f6c823).

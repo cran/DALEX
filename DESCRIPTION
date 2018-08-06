@@ -1,6 +1,6 @@
 Package: DALEX
 Title: Descriptive mAchine Learning EXplanations
-Version: 0.2.3
+Version: 0.2.4
 Authors@R: person("Przemyslaw", "Biecek", email = "przemyslaw.biecek@gmail.com", role = c("aut", "cre"))
 Description: Machine Learning (ML) models are widely used and have various applications in classification 
   or regression. Models created with boosting, bagging, stacking or similar techniques are often
@@ -22,8 +22,8 @@ Suggests: gbm, randomForest, xgboost, testthat, dplyr
 URL: https://pbiecek.github.io/DALEX/
 BugReports: https://github.com/pbiecek/DALEX/issues
 NeedsCompilation: no
-Packaged: 2018-06-12 16:49:33 UTC; pbiecek
+Packaged: 2018-08-05 22:59:31 UTC; pbiecek
 Author: Przemyslaw Biecek [aut, cre]
 Maintainer: Przemyslaw Biecek <przemyslaw.biecek@gmail.com>
 Repository: CRAN
-Date/Publication: 2018-06-13 08:02:54 UTC
+Date/Publication: 2018-08-06 06:10:03 UTC
