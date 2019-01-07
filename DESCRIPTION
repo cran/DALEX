@@ -1,6 +1,6 @@
 Package: DALEX
 Title: Descriptive mAchine Learning EXplanations
-Version: 0.2.5
+Version: 0.2.6
 Authors@R: person("Przemyslaw", "Biecek", email = "przemyslaw.biecek@gmail.com", 
     role = c("aut", "cre"),
     comment = c(ORCID = "0000-0001-8423-1823"))
@@ -24,8 +24,8 @@ Suggests: gbm, randomForest, xgboost, testthat, dplyr
 URL: https://pbiecek.github.io/DALEX/
 BugReports: https://github.com/pbiecek/DALEX/issues
 NeedsCompilation: no
-Packaged: 2019-01-02 09:43:15 UTC; pbiecek
+Packaged: 2019-01-04 21:11:19 UTC; pbiecek
 Author: Przemyslaw Biecek [aut, cre] (<https://orcid.org/0000-0001-8423-1823>)
 Maintainer: Przemyslaw Biecek <przemyslaw.biecek@gmail.com>
 Repository: CRAN
-Date/Publication: 2019-01-02 10:30:03 UTC
+Date/Publication: 2019-01-07 19:50:12 UTC

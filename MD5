@@ -1,9 +1,9 @@
-f3aa936131fe65844e33b7100ef11fc1 *DESCRIPTION
-556685a574bfbf1608f214d93c5112ca *NAMESPACE
-6ee332c7fd21541c27e8c964ccb4318b *NEWS.md
+6214049e67b1de76069092f5e38acd93 *DESCRIPTION
+f6dca2a88fdd543c94f99f1755654139 *NAMESPACE
+2a5e4ee6a51fa5ba149b02ccc6a5f729 *NEWS.md
 b9c563c51d539e0b749737360fb16dfe *R/HR.R
 fd1db0504b2fea470959dbe3b57ddfa9 *R/apartments.R
-b2cac60f9ef2c478d7a52e069b20715f *R/explain.R
+aee360ca422ed1b6c5e5e2b97f3c45b8 *R/explain.R
 8f71e08dd4d7fe05ec593578e9739745 *R/model_performance.R
 56af3638a5f4a6ae81639881847d694c *R/plot_model_performance.R
 cca1aa65e5febd6b144f6895e2412f98 *R/plot_single_prediction.R
@@ -35,7 +35,7 @@ ddea56fd59b5d924e4ccfbc5c829b8ea *man/print.explainer.Rd
 36c98c223945084bf94d13f89c1596f8 *man/theme_mi2.Rd
 ec55c46462d762e6aec87264dfc60c2e *man/variable_importance.Rd
 81ed200f75edf05d6d88e579385696df *man/variable_response.Rd
-c47a34aab4d2ecda28e7a1c50cea66b9 *man/yhat.Rd
+4a9b840039c20809f10efc79c2b5f7fb *man/yhat.Rd
 d28081e2b062410fcce054dfd0357df5 *tests/testthat.R
 aaec17f80ca58c44bd0627648573245f *tests/testthat/helper-objects.R
 73d4f171d1fd4a1e1b9fbde173ce36b8 *tests/testthat/test_explain.R
