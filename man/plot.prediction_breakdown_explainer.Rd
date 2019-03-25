@@ -5,8 +5,8 @@
 \title{Plots Local Explanations (Single Prediction)}
 \usage{
 \method{plot}{prediction_breakdown_explainer}(x, ...,
-  add_contributions = TRUE, vcolors = c(`-1` = "#d8b365", `0` =
-  "#f5f5f5", `1` = "#5ab4ac", X = "darkgrey"), digits = 3,
+  add_contributions = TRUE, vcolors = c(`-1` = "#f05a71", `0` =
+  "#371ea3", `1` = "#8bdcbe", X = "#371ea3"), digits = 3,
   rounding_function = round)
 }
 \arguments{
@@ -68,7 +68,7 @@ model <- gbm(quality ~ pH + residual.sugar + sulphates + alcohol, data = wine,
          function(model, x) predict(model, x, n.trees = 1000))
  # create a new observation
  exp_sgn <- prediction_breakdown(explainer_gbm, observation = new.wine)
- exp_sgn
+ head(exp_sgn)
  plot(exp_sgn)
  plot(wine_rf_predict4, wine_lm_predict4, exp_sgn)
  }

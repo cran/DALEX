@@ -1,3 +1,22 @@
+DALEX 0.3
+----------------------------------------------------------------
+* `pdp`, `factorMerger` and `ALEPlot` are going to `Suggested`. ([#60](https://github.com/pbiecek/DALEX/issues/60)). In next releases they will be deprecated.
+* added `predict` function that calls the `predict_function` hidden in the `explainer` object. ([#58](https://github.com/pbiecek/DALEX/issues/58)).
+
+DALEX 0.2.9
+----------------------------------------------------------------
+* the `titanic` dataset is copied from `stablelearner` package. Some features are transformed (some `NA` replaced with `0`, more numeric features).
+
+DALEX 0.2.8
+----------------------------------------------------------------
+* `DALEX` is being prepared for tighter integration with `iBreakDown` and `ingredients`.
+* temporally there is a duplicated `single_variable` and `single_feature`
+* Added new `theme_drwhy()`.
+* New arguments in the `plot.variable_importance_explainer()`. Namely `bar_width` with widths of bars and `show_baseline` if baseline shall be included in these plots.
+* New skin in the `plot.variable_response_explainer()`. 
+* New skin in the `plot.prediction_breakdown_explainer()`.
+
+
 DALEX 0.2.7
 ----------------------------------------------------------------
 * Test datasets are now named `apartments_test` and `HR_test`

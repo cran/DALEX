@@ -4,54 +4,47 @@
 #'
 #' @param x a single variable exlainer produced with the 'single_variable' function
 #' @param ... other explainers that shall be plotted together
+#' @param use_facets logical. If TRUE then separate models are on different facets
 #'
 #' @return a ggplot2 object
 #' @export
 #' @import ggplot2
 #' @importFrom grDevices dev.off pdf
-#' @importFrom ggpubr ggarrange
-#' @importFrom factorMerger getOptimalPartitionDf plotTree plotResponse
 #'
 #' @examples
-#' library("breakDown")
-#' logit <- function(x) exp(x)/(1+exp(x))
+#' HR$evaluation <- factor(HR$evaluation)
 #'
-#' HR_glm_model <- glm(left~., data = breakDown::HR_data, family = "binomial")
-#' explainer_glm <- explain(HR_glm_model, data = HR_data, trans = logit)
-#' expl_glm <- variable_response(explainer_glm, "satisfaction_level", "pdp", trans=logit)
+#' HR_glm_model <- glm(status == "fired"~., data = HR, family = "binomial")
+#' explainer_glm <- explain(HR_glm_model, data = HR)
+#' expl_glm <- variable_response(explainer_glm, "age", "pdp")
 #' plot(expl_glm)
 #'
 #'  \dontrun{
 #' library("randomForest")
-#' HR_rf_model <- randomForest(factor(left)~., data = breakDown::HR_data, ntree = 100)
-#' explainer_rf  <- explain(HR_rf_model, data = HR_data,
-#'                        predict_function = function(model, x)
-#'                              predict(model, x, type = "prob")[,2])
-#' expl_rf  <- variable_response(explainer_rf, variable = "satisfaction_level",
-#'                        type = "pdp", which.class = 2, prob = TRUE)
+#' HR_rf_model <- randomForest(status == "fired" ~., data = HR)
+#' explainer_rf  <- explain(HR_rf_model, data = HR)
+#' expl_rf  <- variable_response(explainer_rf, variable = "age",
+#'                        type = "pdp")
 #' plot(expl_rf)
-#'
 #' plot(expl_rf, expl_glm)
 #'
 #' # Example for factor variable (with factorMerger)
-#' library("randomForest")
-#' expl_rf  <- variable_response(explainer_rf, variable =  "sales", type = "factor")
+#' expl_rf  <- variable_response(explainer_rf, variable =  "evaluation", type = "factor")
 #' plot(expl_rf)
 #'
-#' expl_glm  <- variable_response(explainer_glm, variable =  "sales", type = "factor")
+#' expl_glm  <- variable_response(explainer_glm, variable =  "evaluation", type = "factor")
 #' plot(expl_glm)
 #'
 #' # both models
 #' plot(expl_rf, expl_glm)
 #'  }
 #'
-
-plot.variable_response_explainer <- function(x, ...) {
+plot.variable_response_explainer <- function(x, ..., use_facets = FALSE) {
   if ("factorMerger" %in% class(x)) {
     return(plot.variable_response_factor_explainer(x, ...))
   }
   if ("data.frame" %in% class(x)) {
-    return(plot.variable_response_numeric_explainer(x, ...))
+    return(plot.variable_response_numeric_explainer(x, ..., use_facets = use_facets))
   }
 }
 
@@ -60,8 +53,8 @@ plot.variable_response_factor_explainer <- function(x, ...) {
   clusterSplit <- list(stat = "GIC", value = 2)
 
   all_plots <- lapply(fex, function(fm) {
-    colorsDf <- getOptimalPartitionDf(fm, "GIC", 2)
-    mergingPathPlot <- plotTree(fm,
+    colorsDf <- factorMerger::getOptimalPartitionDf(fm, "GIC", 2)
+    mergingPathPlot <- factorMerger::plotTree(fm,
                          statistic = "loglikelihood",
                          nodesSpacing = "equidistant",
                          title = fm$label[1],
@@ -74,16 +67,16 @@ plot.variable_response_factor_explainer <- function(x, ...) {
                          clusterSplit = clusterSplit,
                          palette = NULL,
                          panelGrid = FALSE) +
-        scale_x_continuous("", breaks=NULL)
-    responsePlot <- plotResponse(fm, "boxplot", TRUE, clusterSplit, NULL) +
+        scale_x_continuous("", breaks = NULL)
+    responsePlot <- factorMerger::plotResponse(fm, "boxplot", TRUE, clusterSplit, NULL) +
       ggtitle("Partial Group Predictions")
-    ggarrange(mergingPathPlot, responsePlot,
-              ncol = 2,  align = "h", widths = c(2, 1))
+    ggpubr::ggarrange(mergingPathPlot,
+              ncol = 1,  align = "h", widths = c(2))
   })
-  ggarrange(plotlist = all_plots, ncol = 1, nrow = length(all_plots)) + theme_mi2()
+  ggpubr::ggarrange(plotlist = all_plots, ncol = 1, nrow = length(all_plots)) + theme_void()
 }
 
-plot.variable_response_numeric_explainer <- function(x, ...) {
+plot.variable_response_numeric_explainer <- function(x, ..., use_facets = FALSE) {
   df <- x
   class(df) <- "data.frame"
 
@@ -96,14 +89,21 @@ plot.variable_response_numeric_explainer <- function(x, ...) {
   }
 
   variable_name <- head(df$var, 1)
-  ggplot(df, aes_string(x = "x", y = "y", color = "label", shape = "type")) +
-    geom_point() +
-    geom_line() +
-    theme_mi2() +
-    scale_color_brewer(name = "Model", type = "qual", palette = "Dark2") +
-    scale_shape_discrete(name = "Type") +
-    ggtitle("Variable response") +
-    xlab(variable_name) + ylab(expression(hat("y")))
+  nlabels <- length(unique(df$label))
+  pl <- ggplot(df, aes_string(x = "x", y = "y", color = "label")) +
+    geom_point(size = 1) +
+    geom_line(size = 1) +
+    theme_drwhy() +
+    scale_color_manual(name = "Model", values = theme_drwhy_colors(nlabels)) +
+    ggtitle("") +
+    xlab(variable_name) + ylab("prediction")
+
+  if (use_facets) {
+    pl <- pl + facet_wrap(~label, ncol = 1, scales = "free_y") +
+      theme(legend.position = "none")
+  }
+
+  pl
 
 }
 

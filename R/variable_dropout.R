@@ -6,6 +6,7 @@
 #' @param type character, type of transformation that should be applied for dropout loss. 'raw' results raw drop lossess, 'ratio' returns \code{drop_loss/drop_loss_full_model} while 'difference' returns \code{drop_loss - drop_loss_full_model}
 #' @param n_sample number of observations that should be sampled for calculation of variable importance. If negative then variable importance will be calculated on whole dataset (no sampling).
 #'
+#' @references Predictive Models: Visual Exploration, Explanation and Debugging \url{https://pbiecek.github.io/PM_VEE/}
 #' @return An object of the class 'variable_leverage_explainer'.
 #' It's a data frame with calculated average response.
 #'
@@ -15,13 +16,13 @@
 #'  \dontrun{
 #' library("breakDown")
 #' library("randomForest")
-#' HR_rf_model <- randomForest(left~., data = breakDown::HR_data, ntree = 100)
-#' explainer_rf  <- explain(HR_rf_model, data = HR_data, y = HR_data$left)
+#' HR_rf_model <- randomForest(status == "fired"~., data = HR, ntree = 100)
+#' explainer_rf  <- explain(HR_rf_model, data = HR, y = HR$status == "fired")
 #' vd_rf <- variable_importance(explainer_rf, type = "raw")
 #' vd_rf
 #'
-#' HR_glm_model <- glm(left~., data = breakDown::HR_data, family = "binomial")
-#' explainer_glm <- explain(HR_glm_model, data = HR_data, y = HR_data$left)
+#' HR_glm_model <- glm(status == "fired"~., data = HR, family = "binomial")
+#' explainer_glm <- explain(HR_glm_model, data = HR, y = HR$status == "fired")
 #' logit <- function(x) exp(x)/(1+exp(x))
 #' vd_glm <- variable_importance(explainer_glm, type = "raw",
 #'                         loss_function = function(observed, predicted)
@@ -29,13 +30,13 @@
 #' vd_glm
 #'
 #' library("xgboost")
-#' model_martix_train <- model.matrix(left~.-1, breakDown::HR_data)
-#' data_train <- xgb.DMatrix(model_martix_train, label = breakDown::HR_data$left)
+#' model_martix_train <- model.matrix(status == "fired" ~ .-1, HR)
+#' data_train <- xgb.DMatrix(model_martix_train, label = HR$status == "fired")
 #' param <- list(max_depth = 2, eta = 1, silent = 1, nthread = 2,
 #'               objective = "binary:logistic", eval_metric = "auc")
 #' HR_xgb_model <- xgb.train(param, data_train, nrounds = 50)
 #' explainer_xgb <- explain(HR_xgb_model, data = model_martix_train,
-#'                      y = HR_data$left, label = "xgboost")
+#'                      y = HR$status == "fired", label = "xgboost")
 #' vd_xgb <- variable_importance(explainer_xgb, type = "raw")
 #' vd_xgb
 #' plot(vd_xgb)
@@ -86,31 +87,4 @@ variable_importance <- function(explainer,
 }
 #' @export
 variable_dropout <- variable_importance
-
-
-#' Preimplemented Loss Functions
-#'
-#' @param predicted predicted scores, either vector of matrix, these are returned from the model specific `predict_function()``
-#' @param observed observed scores or labels, these are supplied as explainer specific `y`
-#' @param p_min for cross entropy, minimal value for probability to make sure that `log` will not explode
-#'
-#' @return numeric - value of the loss function
-#'
-#' @aliases loss_cross_entropy loss_sum_of_squares loss_root_mean_square
-#' @export
-#' @examples
-#'  \dontrun{
-#' library("randomForest")
-#' HR_rf_model <- randomForest(status~., data = HR, ntree = 100)
-#' loss_cross_entropy(HR$status, yhat(HR_rf_model))
-#'  }
-#' @export
-loss_cross_entropy = function(observed, predicted, p_min = 0.0001) {
-  p <- sapply(seq_along(observed), function(i)  predicted[i, observed[i]] )
-  sum(-log(pmax(p, p_min)))
-}
-#' @export
-loss_sum_of_squares = function(observed, predicted) sum((observed - predicted)^2)
-#' @export
-loss_root_mean_square = function(observed, predicted) sqrt(mean((observed - predicted)^2))
 

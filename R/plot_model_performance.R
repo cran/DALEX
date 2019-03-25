@@ -12,22 +12,21 @@
 #' @export
 #' @examples
 #'  \dontrun{
-#' library("breakDown")
 #' library("randomForest")
-#' HR_rf_model <- randomForest(left~., data = breakDown::HR_data, ntree = 100)
-#' explainer_rf  <- explain(HR_rf_model, data = HR_data, y = HR_data$left)
+#' HR_rf_model <- randomForest(status == "fired"~., data = HR, ntree = 100)
+#' explainer_rf  <- explain(HR_rf_model, data = HR, y = HR$status == "fired")
 #' mp_rf <- model_performance(explainer_rf)
 #' plot(mp_rf)
 #' plot(mp_rf, geom = "boxplot", show_outliers = 1)
 #'
-#' HR_glm_model <- glm(left~., data = breakDown::HR_data, family = "binomial")
-#' explainer_glm <- explain(HR_glm_model, data = HR_data, y = HR_data$left, label = "glm",
+#' HR_glm_model <- glm(status == "fired"~., data = HR, family = "binomial")
+#' explainer_glm <- explain(HR_glm_model, data = HR, y = HR$status == "fired", label = "glm",
 #'                     predict_function = function(m,x) predict.glm(m,x,type = "response"))
 #' mp_glm <- model_performance(explainer_glm)
 #' plot(mp_glm)
 #'
-#' HR_lm_model <- lm(left~., data = breakDown::HR_data)
-#' explainer_lm <- explain(HR_lm_model, data = HR_data, y = HR_data$left)
+#' HR_lm_model <- lm(status == "fired"~., data = HR)
+#' explainer_lm <- explain(HR_lm_model, data = HR, y = HR$status == "fired")
 #' mp_lm <- model_performance(explainer_lm)
 #' plot(mp_lm)
 #'
@@ -57,11 +56,12 @@ plot.model_performance_explainer <- function(x, ..., geom = "ecdf", show_outlier
     df$name <- NULL
     df$name <- rownames(df)
   }
+  nlabels <- length(unique(df$label))
   if (geom == "ecdf") {
     pl <-   ggplot(df, aes(abs(diff), color = label)) +
       stat_ecdf(geom = "step") +
-      theme_mi2() +
-      scale_color_brewer(name = "Model", type = "qual", palette = "Dark2") +
+      theme_drwhy() +
+      scale_color_manual(name = "Model", values = theme_drwhy_colors(nlabels)) +
       xlab(expression(group("|", residual, "|"))) +
       scale_y_continuous(breaks = seq(0,1,0.1),
                          labels = paste(seq(100,0,-10),"%"),
@@ -69,11 +69,11 @@ plot.model_performance_explainer <- function(x, ..., geom = "ecdf", show_outlier
                          name = "") +
       ggtitle(expression(paste("Distribution of ", group("|", residual, "|"))))
   } else {
-    pl <- ggplot(df, aes(x=label, y=abs(diff), fill = label)) +
-      stat_boxplot(alpha=0.4, coef = 1000) +
-      stat_summary(fun.y=lossFunction, geom="point", shape=20, size=10, color="red", fill="red") +
-      theme_mi2() +
-      scale_fill_brewer(name = "Model", type = "qual", palette = "Dark2") +
+    pl <- ggplot(df, aes(x = label, y = abs(diff), fill = label)) +
+      stat_boxplot(alpha = 0.4, coef = 1000) +
+      stat_summary(fun.y = lossFunction, geom="point", shape = 20, size=10, color="red", fill="red") +
+      theme_drwhy_vertical() +
+      scale_fill_manual(name = "Model", values = theme_drwhy_colors(nlabels)) +
       ylab("") + xlab("") +
       ggtitle(
         expression(paste("Boxplots of ", group("|", residual, "|"))),
