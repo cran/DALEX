@@ -1,3 +1,14 @@
+DALEX 0.4.0
+----------------------------------------------------------------
+* `ingredients` and `iBreakDown` are added to additional features ([#72](https://github.com/pbiecek/DALEX/issues/72)).
+* `feature_response()` and `variable_response()` are marked as Deprecated. It is suggested to use `ingredients::partial_dependency()`, `ingredients::accumulated_dependency()` instead ([#74](https://github.com/pbiecek/DALEX/issues/74)).
+* `variable_importance()` is marked as Deprecated. It is suggested to use `ingredients::feature_importance()` instead  ([#75](https://github.com/pbiecek/DALEX/issues/75)).
+* `prediction_breakdown()` is marked as Deprecated. It is suggested to use `iBreakDown::break_down()` or `iBreakDown::shap()` instead  ([#76](https://github.com/pbiecek/DALEX/issues/76)).
+
+DALEX 0.3.1
+----------------------------------------------------------------
+* updated filenames
+
 DALEX 0.3
 ----------------------------------------------------------------
 * `pdp`, `factorMerger` and `ALEPlot` are going to `Suggested`. ([#60](https://github.com/pbiecek/DALEX/issues/60)). In next releases they will be deprecated.

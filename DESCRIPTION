@@ -1,6 +1,6 @@
 Package: DALEX
 Title: Descriptive mAchine Learning EXplanations
-Version: 0.3.0
+Version: 0.4
 Authors@R: person("Przemyslaw", "Biecek", email = "przemyslaw.biecek@gmail.com", 
     role = c("aut", "cre"),
     comment = c(ORCID = "0000-0001-8423-1823"))
@@ -23,13 +23,13 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 Imports: ggplot2
-Suggests: gbm, randomForest, xgboost, ALEPlot, breakDown, pdp,
-        factorMerger, ggpubr, testthat, dplyr
+Suggests: gbm, randomForest, xgboost, ALEPlot, ingredients, iBreakDown,
+        breakDown, pdp, factorMerger, ggpubr, testthat, dplyr
 URL: https://pbiecek.github.io/DALEX/
 BugReports: https://github.com/pbiecek/DALEX/issues
 NeedsCompilation: no
-Packaged: 2019-03-25 21:50:43 UTC; pbiecek
+Packaged: 2019-05-17 20:08:04 UTC; pbiecek
 Author: Przemyslaw Biecek [aut, cre] (<https://orcid.org/0000-0001-8423-1823>)
 Maintainer: Przemyslaw Biecek <przemyslaw.biecek@gmail.com>
 Repository: CRAN
-Date/Publication: 2019-03-25 22:46:17 UTC
+Date/Publication: 2019-05-17 21:20:03 UTC
