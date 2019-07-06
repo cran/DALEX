@@ -1,7 +1,5 @@
 #' DrWhy Theme for ggplot objects
 #'
-#' @param n number of colors for color palette
-#'
 #' @return theme for ggplot2 objects
 #' @export
 #' @rdname theme_drwhy
@@ -46,9 +44,14 @@ theme_drwhy_vertical <- function() {
 }
 
 
+#' DrWhy color palettes for ggplot objects
+#'
+#' @param n number of colors for color palette
+#'
+#' @return color palette as vector of charactes
 #' @export
-#' @rdname theme_drwhy
-theme_drwhy_colors <- function(n = 2) {
+#' @rdname colors_drwhy
+colors_discrete_drwhy <- function(n = 2) {
   if (n == 1) return("#4378bf")
   if (n == 2) return(c( "#4378bf", "#8bdcbe"))
   if (n == 3) return(c( "#4378bf", "#f05a71", "#8bdcbe"))
@@ -58,8 +61,38 @@ theme_drwhy_colors <- function(n = 2) {
   c( "#4378bf", "#46bac2", "#371ea3", "#8bdcbe", "#ae2c87", "#ffa58c", "#f05a71")[((0:(n-1)) %% 7) + 1]
 }
 
+
 #' @export
-#' @rdname theme_drwhy
-theme_drwhy_colors_break_down <- function() {
+#' @rdname colors_drwhy
+colors_diverging_drwhy <- function() {
+  c("#c7f5bf", "#371ea3")
+}
+
+
+#' @export
+#' @rdname colors_drwhy
+colors_breakdown_drwhy <- function() {
   c(`-1` = "#f05a71", `0` = "#371ea3", `1` = "#8bdcbe", X = "#371ea3")
+}
+
+#' @export
+#' @rdname colors_drwhy
+theme_drwhy_colors  <- function(n = 2) {
+  # Deprecated, but print the message only once
+  if (!exists("message_theme_colors", envir = .DALEX.env)) {
+    .DALEX.env$message_theme_colors = TRUE
+    .Deprecated("theme_drwhy_colors()",  msg = "Please note that 'theme_drwhy_colors()' is now deprecated, it is better to use 'colors_discrete_drwhy()' instead.")
+  }
+  colors_discrete_drwhy(n)
+}
+
+#' @export
+#' @rdname colors_drwhy
+theme_drwhy_colors_break_down <- function() {
+  # Deprecated, but print the message only once
+  if (!exists("message_theme_colors_breakdown", envir = .DALEX.env)) {
+    .DALEX.env$message_theme_colors_breakdown = TRUE
+    .Deprecated("theme_drwhy_colors_break_down()",  msg = "Please note that 'theme_drwhy_colors_break_down()' is now deprecated, it is better to use 'colors_breakdown_drwhy' instead.")
+  }
+  colors_breakdown_drwhy()
 }

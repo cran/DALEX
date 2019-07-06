@@ -45,6 +45,9 @@
 #' wine_rf_explainer4
 #'  }
 #'
+
+#' @export
+#' @rdname explain
 explain.default <- function(model, data = NULL, y = NULL, predict_function = yhat, link = I, ..., label = tail(class(model), 1)) {
   if (is.null(data)) {
     possible_data <- try(model.frame(model), silent = TRUE)
@@ -74,7 +77,7 @@ explain.default <- function(model, data = NULL, y = NULL, predict_function = yha
   explainer
 }
 
-#' @export
 #' @rdname explain
+#' @export
 explain <- explain.default
 

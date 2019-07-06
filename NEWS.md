@@ -1,3 +1,20 @@
+DALEX 0.4.4
+----------------------------------------------------------------
+* new color schemes: `colors_breakdown_drwhy()`, `colors_discrete_drwhy()` and `colors_diverging_drwhy()`.
+* in this version the `scikitlearn_model()` is removed as it is not working with python 2.7
+
+DALEX 0.4.3
+----------------------------------------------------------------
+* New support for scikit-learn models via `scikitlearn_model()`
+
+DALEX 0.4.2
+----------------------------------------------------------------
+* New `yhat` functions for `mlr`, `h2o` and `caret` packages (added by Szymon).
+
+DALEX 0.4.1
+----------------------------------------------------------------
+* `plot.variable_importance_explainer()` has now  `desc_sorting` argument. If FALSE then variable importance will be sorted in an increasing order ([#41](https://github.com/pbiecek/DALEX/issues/41)).
+
 DALEX 0.4.0
 ----------------------------------------------------------------
 * `ingredients` and `iBreakDown` are added to additional features ([#72](https://github.com/pbiecek/DALEX/issues/72)).
