@@ -2,25 +2,25 @@
 % Please edit documentation in R/plot_feature_response.R
 \name{plot.feature_response_explainer}
 \alias{plot.feature_response_explainer}
-\title{Plots Marginal Model Explanations (Single Variable Responses)}
+\title{Plot Marginal Model Explanations (Single Variable Responses)}
 \usage{
 \method{plot}{feature_response_explainer}(x, ..., use_facets = FALSE)
 }
 \arguments{
-\item{x}{a single variable exlainer produced with the 'single_feature' function}
+\item{x}{a single variable exlainer produced with the \code{single_feature} function}
 
 \item{...}{other explainers that shall be plotted together}
 
-\item{use_facets}{logical. If TRUE then separate models are on different facets}
+\item{use_facets}{logical. If \code{TRUE} then separate models are on different facets}
 }
 \value{
 a ggplot2 object
 }
 \description{
-Function 'plot.variable_response_explainer' plots marginal responses for one or more explainers.
+Function \code{\link{plot.variable_response_explainer}} plots
+marginal responses for one or more explainers.
 }
 \examples{
-library("DALEX")
 
 HR_glm_model <- glm(status == "fired" ~., data = HR, family = "binomial")
 explainer_glm <- explain(HR_glm_model, data = HR)
@@ -30,7 +30,7 @@ plot(expl_glm)
 
  \dontrun{
 library("randomForest")
-HR_rf_model <- randomForest(status~., data = HR, ntree = 100)
+HR_rf_model <- randomForest(as.factor(status == "fired" )~., data = HR, ntree = 100)
 explainer_rf  <- explain(HR_rf_model, data = HR)
 expl_rf  <- feature_response(explainer_rf, feature = "hours",
                        type = "pdp")

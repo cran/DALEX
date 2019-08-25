@@ -1,4 +1,4 @@
-#' Marginal Response for a Single Feature
+#' Calculate Marginal Response for a Single Feature
 #'
 #' Calculates the average model response as a function of a single selected variable.
 #' Use the 'type' parameter to select the type of marginal response to be calculated.
@@ -29,7 +29,6 @@
 #' @export
 #'
 #' @examples
-#' library("DALEX")
 #'
 #' HR_glm_model <- glm(status == "fired" ~ ., data = HR, family = "binomial")
 #' explainer_glm <- explain(HR_glm_model, data = HR)

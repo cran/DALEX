@@ -4,7 +4,7 @@
 \alias{feature_response}
 \alias{feature_response.explainer}
 \alias{feature_response.default}
-\title{Marginal Response for a Single Feature}
+\title{Calculate Marginal Response for a Single Feature}
 \usage{
 feature_response(x, ...)
 
@@ -52,7 +52,6 @@ For factor variables we are using the 'factorMerger' package.
 Please note that the argument \code{type} must be set to \code{'factor'} to use this method.
 }
 \examples{
-library("DALEX")
 
 HR_glm_model <- glm(status == "fired" ~ ., data = HR, family = "binomial")
 explainer_glm <- explain(HR_glm_model, data = HR)

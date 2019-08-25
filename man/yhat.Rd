@@ -9,13 +9,10 @@
 \alias{yhat.cv.glmnet}
 \alias{yhat.glmnet}
 \alias{yhat.ranger}
-\alias{yhat.WrappedModel}
 \alias{yhat.model_fit}
 \alias{yhat.train}
 \alias{yhat.default}
-\alias{yhat.H2ORegressionModel}
-\alias{yhat.H2OBinomialModel}
-\title{Wrapper over the predict function}
+\title{Wrap Various Predict Functions}
 \usage{
 yhat(X.model, newdata, ...)
 
@@ -33,17 +30,11 @@ yhat(X.model, newdata, ...)
 
 \method{yhat}{ranger}(X.model, newdata, ...)
 
-\method{yhat}{WrappedModel}(X.model, newdata, ...)
-
 \method{yhat}{model_fit}(X.model, newdata, ...)
 
 \method{yhat}{train}(X.model, newdata, ...)
 
 \method{yhat}{default}(X.model, newdata, ...)
-
-\method{yhat}{H2ORegressionModel}(X.model, newdata, ...)
-
-\method{yhat}{H2OBinomialModel}(X.model, newdata, ...)
 }
 \arguments{
 \item{X.model}{object - a model to be explained}
@@ -56,7 +47,7 @@ yhat(X.model, newdata, ...)
 An numeric matrix of predictions
 }
 \description{
-This function is a wrapper over the predict function.
+This function is a wrapper over various predict functions for different models and differnt model structures.
 The wrapper returns a single numeric score for each new observation.
 To do this it uses different extraction techniques for models from different classes,
 like for classification random forest is forces the output to be probabilities
@@ -67,13 +58,11 @@ Currently supported packages are:
 \itemize{
 \item class `cv.glmnet` and `glmnet` - models created with `glmnet` package
 \item class `glm` - generalized linear models
-\item class `H2OBinomialModel` and `H2ORegressionModel` - models created with `h2o` package
 \item class `model_fit` - models created with `parsnip` package
 \item class `lm` - linear models created with `stats::lm`
 \item class `ranger` - models created with `ranger` package
 \item class `randomForest` - random forest models created with `randomForest` package
 \item class `svm` - support vector machines models created with the `e1071` package
 \item class `train` - models created with `caret` package
-\item class `WrappedModel` - models created with `mlr` package
 }
 }

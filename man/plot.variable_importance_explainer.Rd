@@ -2,13 +2,13 @@
 % Please edit documentation in R/plot_variable_importance.R
 \name{plot.variable_importance_explainer}
 \alias{plot.variable_importance_explainer}
-\title{Plots Global Model Explanations (Variable Importance)}
+\title{Plot Variable Importance Explanations}
 \usage{
 \method{plot}{variable_importance_explainer}(x, ..., max_vars = 10,
   bar_width = 10, show_baseline = FALSE, desc_sorting = TRUE)
 }
 \arguments{
-\item{x}{a variable dropout exlainer produced with the 'variable_dropout' function}
+\item{x}{a variable dropout exlainer produced with the \code{\link{variable_dropout}} function}
 
 \item{...}{other explainers that shall be plotted together}
 
@@ -24,16 +24,20 @@
 a ggplot2 object
 }
 \description{
-Function \code{plot.variable_dropout_explainer} plots dropouts for variables used in the model.
-It uses output from \code{variable_dropout} function that corresponds to permutation based measure of variable importance.
-Variables are sorted in the same order in all panels. The order depends on the average drop out loss. In different panels variable contributions may not look like sorted if variable importance is different in different in different mdoels.
+Function \code{plot.variable_dropout_explainer} plots dropouts
+for variables used in the model.
+It uses output from \code{variable_dropout} function that corresponds
+to permutation based measure of variable importance.
+Variables are sorted in the same order in all panels.
+The order depends on the average drop out loss.
+In different panels variable contributions may not look like sorted
+if variable importance is different in different in different mdoels.
 }
 \examples{
 
  \dontrun{
-library("breakDown")
 library("randomForest")
-HR_rf_model <- randomForest(status == "fired"~., data = HR, ntree = 100)
+HR_rf_model <- randomForest(as.factor(status == "fired")~., data = HR, ntree = 100)
 explainer_rf  <- explain(HR_rf_model, data = HR, y = HR$status == "fired")
 vd_rf <- variable_importance(explainer_rf, type = "raw")
 head(vd_rf)

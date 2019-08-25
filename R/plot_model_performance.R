@@ -1,25 +1,25 @@
-#' Model Performance Plots
+#' Plot Model Performance Explanations
 #'
-#' @param x a model to be explained, preprocessed by the 'explain' function
+#' @param x a model to be explained, preprocessed by the \code{\link{explain}} function
 #' @param ... other parameters
 #' @param geom either \code{"ecdf"} or \code{"boxplot"} determines how residuals shall be summarized
 #' @param lossFunction function that calculates the loss for a model based on model residuals. By default it's the root mean square.
 #' @param show_outliers number of largest residuals to be presented (only when geom = boxplot).
 #' @param ptlabel either \code{"name"} or \code{"index"} determines the naming convention of the outliers
 #'
-#' @return An object of the class 'model_performance_explainer'.
+#' @return An object of the class \code{model_performance_explainer}.
 #'
 #' @export
 #' @examples
 #'  \dontrun{
 #' library("randomForest")
-#' HR_rf_model <- randomForest(status == "fired"~., data = HR, ntree = 100)
+#' HR_rf_model <- randomForest(as.factor(status == "fired")~., data = HR, ntree = 100)
 #' explainer_rf  <- explain(HR_rf_model, data = HR, y = HR$status == "fired")
 #' mp_rf <- model_performance(explainer_rf)
 #' plot(mp_rf)
 #' plot(mp_rf, geom = "boxplot", show_outliers = 1)
 #'
-#' HR_rf_model2 <- randomForest(status == "fired"~age + hours, data = HR, ntree = 100)
+#' HR_rf_model2 <- randomForest(as.factor(status == "fired")~age + hours, data = HR, ntree = 100)
 #' explainer_rf2  <- explain(HR_rf_model2, data = HR, y = HR$status == "fired")
 #' mp_rf2 <- model_performance(explainer_rf2)
 #' plot(mp_rf, mp_rf2)

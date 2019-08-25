@@ -2,12 +2,12 @@
 % Please edit documentation in R/plot_variable_response.R
 \name{plot.variable_response_explainer}
 \alias{plot.variable_response_explainer}
-\title{Plots Marginal Model Explanations (Single Variable Responses)}
+\title{Plot Marginal Model Explanations (Single Variable Responses)}
 \usage{
 \method{plot}{variable_response_explainer}(x, ..., use_facets = FALSE)
 }
 \arguments{
-\item{x}{a single variable exlainer produced with the 'single_variable' function}
+\item{x}{a single variable exlainer produced with the \code{\link{single_variable}} function}
 
 \item{...}{other explainers that shall be plotted together}
 
@@ -17,7 +17,8 @@
 a ggplot2 object
 }
 \description{
-Function 'plot.variable_response_explainer' plots marginal responses for one or more explainers.
+Function \code{\link{plot.variable_response_explainer}}
+plots marginal responses for one or more explainers.
 }
 \examples{
 HR$evaluation <- factor(HR$evaluation)

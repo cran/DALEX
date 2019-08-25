@@ -3,10 +3,9 @@
 \name{variable_response}
 \alias{variable_response}
 \alias{single_variable}
-\title{Marginal Response for a Single Variable}
+\title{Calculate Marginal Response Explanations for a Single Variable}
 \usage{
-variable_response(explainer, variable, type = "pdp",
-  trans = explainer$link, ...)
+variable_response(explainer, variable, type = "pdp", trans = I, ...)
 }
 \arguments{
 \item{explainer}{a model to be explained, preprocessed by the 'explain' function}

@@ -1,4 +1,4 @@
-#' Marginal Response for a Single Variable
+#' Calculate Marginal Response Explanations for a Single Variable
 #'
 #' Calculates the average model response as a function of a single selected variable.
 #' Use the 'type' parameter to select the type of marginal response to be calculated.
@@ -55,7 +55,7 @@
 #' plot(expl_rf, expl_glm)
 #'  }
 #'
-variable_response <- function(explainer, variable, type = "pdp", trans = explainer$link, ...) {
+variable_response <- function(explainer, variable, type = "pdp", trans = I, ...) {
   # Deprecated
   if (type == "pdp") {
     if (!exists("message_partial_dependency", envir = .DALEX.env)) {

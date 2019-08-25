@@ -1,3 +1,22 @@
+DALEX 0.4.7
+----------------------------------------------------------------
+* new dataset `titanic_imputed` as requeted in ([#104](https://github.com/ModelOriented/DALEX/issues/104)).
+* the `explain()` function now detects if target variable `y` is present in the `data` as requested in  ([#103](https://github.com/ModelOriented/DALEX/issues/103)).
+* the DALEX GitHub repository is transfered from `pbiecek/DALEX` to [ModelOriented/DALEX](https://github.com/ModelOriented/DALEX/).
+
+DALEX 0.4.6
+----------------------------------------------------------------
+* Examples updated. Now they use only datasets available from DALEX.
+* yhat.H2ORegressionModel and yhat.H2OBinomialModel moved to ([DALEXtra](https://github.com/ModelOriented/DALEXtra)) and merged into explain_h2o() function.
+* yhat.WrappedModelmoved to ([DALEXtra](https://github.com/ModelOriented/DALEXtra)) and merged as explain_mlr() function.
+* Wrapper for scikit-learn models restored in ([DALEXtra](https://github.com/ModelOriented/DALEXtra)) package.
+* loss_one_minus_auc function added to loss_functions.R. It uses 1-auc to compute loss. Function created by Alicja Gosiewska.
+* Extension for DALEX avaiable at ([DALEXtra](https://github.com/ModelOriented/DALEXtra))
+
+DALEX 0.4.5
+----------------------------------------------------------------
+* the `explain()` function is more verbose. With `verbose = TRUE` (default) it prints detailed information about elements of an explainer ([#95](https://github.com/pbiecek/DALEX/issues/95)).
+
 DALEX 0.4.4
 ----------------------------------------------------------------
 * new color schemes: `colors_breakdown_drwhy()`, `colors_discrete_drwhy()` and `colors_diverging_drwhy()`.
