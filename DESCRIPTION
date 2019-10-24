@@ -1,6 +1,6 @@
 Package: DALEX
 Title: Descriptive mAchine Learning EXplanations
-Version: 0.4.7
+Version: 0.4.9
 Authors@R: c(person("Przemyslaw", "Biecek", email = "przemyslaw.biecek@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8423-1823")),
     person("Szymon", "Maksymiuk", role = "ctb"))
 Description: Machine Learning (ML) models are widely used and have various applications in classification 
@@ -28,9 +28,9 @@ URL: https://ModelOriented.github.io/DALEX/,
         https://github.com/ModelOriented/DALEX
 BugReports: https://github.com/ModelOriented/DALEX/issues
 NeedsCompilation: no
-Packaged: 2019-08-25 10:18:24 UTC; hugo
+Packaged: 2019-10-23 21:55:31 UTC; pbiecek
 Author: Przemyslaw Biecek [aut, cre] (<https://orcid.org/0000-0001-8423-1823>),
   Szymon Maksymiuk [ctb]
 Maintainer: Przemyslaw Biecek <przemyslaw.biecek@gmail.com>
 Repository: CRAN
-Date/Publication: 2019-08-25 13:20:06 UTC
+Date/Publication: 2019-10-24 19:20:06 UTC

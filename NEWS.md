@@ -1,6 +1,18 @@
+DALEX 0.4.9
+----------------------------------------------------------------
+* updated `titanic_imputed` ([#113](https://github.com/ModelOriented/DALEX/issues/113)).
+* added `weights` to the explainer. Note that not all explanations know how to handle weights ([#118](https://github.com/ModelOriented/DALEX/issues/118)).
+* `yhat()` and `model_info()` now support models created with `gbm` package.
+
+DALEX 0.4.8
+----------------------------------------------------------------
+* new argument `colorize` in the `explain()` as requested in ([#112](https://github.com/ModelOriented/DALEX/issues/112)).
+* new generic function `model_info()`. It will extract basic irnformation like model package nam version and task type. ([#109](https://github.com/ModelOriented/DALEX/issues/109), [#110](https://github.com/ModelOriented/DALEX/issues/110))
+* new functions `update_data()` and `update_label()`. ([#114](https://github.com/ModelOriented/DALEX/issues/114)))
+
 DALEX 0.4.7
 ----------------------------------------------------------------
-* new dataset `titanic_imputed` as requeted in ([#104](https://github.com/ModelOriented/DALEX/issues/104)).
+* new dataset `titanic_imputed` as requested in ([#104](https://github.com/ModelOriented/DALEX/issues/104)).
 * the `explain()` function now detects if target variable `y` is present in the `data` as requested in  ([#103](https://github.com/ModelOriented/DALEX/issues/103)).
 * the DALEX GitHub repository is transfered from `pbiecek/DALEX` to [ModelOriented/DALEX](https://github.com/ModelOriented/DALEX/).
 
@@ -60,7 +72,7 @@ DALEX 0.2.8
 * temporally there is a duplicated `single_variable` and `single_feature`
 * Added new `theme_drwhy()`.
 * New arguments in the `plot.variable_importance_explainer()`. Namely `bar_width` with widths of bars and `show_baseline` if baseline shall be included in these plots.
-* New skin in the `plot.variable_response_explainer()`. 
+* New skin in the `plot.variable_response_explainer()`.
 * New skin in the `plot.prediction_breakdown_explainer()`.
 
 
@@ -116,7 +128,7 @@ DALEX 0.1.8
 
 DALEX 0.1.1
 ----------------------------------------------------------------
-* Support for global model structure explainers with `variable_dropout()` function 
+* Support for global model structure explainers with `variable_dropout()` function
 
 DALEX 0.1
 ----------------------------------------------------------------
