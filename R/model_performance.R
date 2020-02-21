@@ -1,80 +1,141 @@
-#' Calculate Model Performance
+#' Dataset Level Model Performance Measures
 #'
-#' Prepare a data frame with model residuals.
+#' Function \code{model_performance()} calculates various performance measures for classification and regression models.
+#' For classification models following measures are calculated: F1, accuracy, recall, precision and AUC.
+#' For regression models following measures are calculated: mean squared error, R squared, median absolute deviation.
 #'
 #' @param explainer a model to be explained, preprocessed by the \code{\link{explain}} function
 #' @param ... other parameters
+#' @param cutoff a cutoff for classification models, needed for measures like recall, precision, ACC, F1. By default 0.5.
 #'
-#' @return An object of the class \code{model_performance_explainer}.
-#' @references Predictive Models: Visual Exploration, Explanation and Debugging \url{https://pbiecek.github.io/PM_VEE/}
+#' @return An object of the class \code{model_performance}.
+#' @references Explanatory Model Analysis. Explore, Explain and Examine Predictive Models. \url{https://pbiecek.github.io/ema/}
+#' @importFrom stats median
 #' @export
 #' @examples
 #'  \dontrun{
-#' library("randomForest")
-#' HR_rf_model <- randomForest(as.factor(status == "fired")~., data = HR, ntree = 100)
-#' explainer_rf  <- explain(HR_rf_model, data = HR, y = HR$status == "fired")
+#' library("ranger")
+#' titanic_ranger_model <- ranger(survived~., data = titanic_imputed, num.trees = 100,
+#'                                probability = TRUE)
+#' # It's a good practice to pass data without target variable
+#' explainer_ranger  <- explain(titanic_ranger_model, data = titanic_imputed[,-8],
+#'                              y = titanic_imputed$survived)
 #' # resulting dataframe has predicted values and residuals
-#' model_performance(explainer_rf)
+#' mp_ex_rn <- model_performance(explainer_ranger)
 #'
-#' HR_glm_model <- glm(status == "fired"~., data = HR, family = "binomial")
-#' explainer_glm <- explain(HR_glm_model, data = HR, y = HR$status == "fired",
-#'                     predict_function = function(m,x) predict.glm(m,x,type = "response"))
+#' titanic_glm_model <- glm(survived~., data = titanic_imputed, family = "binomial")
+#' explainer_glm <- explain(titanic_glm_model, data = titanic_imputed[,-8],
+#'                          y = titanic_imputed$survived,
+#'                     predict_function = function(m,x) predict.glm(m,x,type = "response"),
+#'                          label = "glm")
 #' mp_ex_glm <- model_performance(explainer_glm)
 #' mp_ex_glm
 #' plot(mp_ex_glm)
+#' plot(mp_ex_glm, mp_ex_rn)
 #'
-#' HR_lm_model <- lm(status == "fired"~., data = HR)
-#' explainer_lm <- explain(HR_lm_model, data = HR, y = HR$status == "fired")
-#' model_performance(explainer_lm)
+#' titanic_lm_model <- lm(survived~., data = titanic_imputed)
+#' explainer_lm <- explain(titanic_lm_model, data = titanic_imputed[,-8], y = titanic_imputed$survived)
+#' mp_ex_lm <- model_performance(explainer_lm)
+#' plot(mp_ex_lm)
+#' plot(mp_ex_glm, mp_ex_rn, mp_ex_lm)
 #'  }
 #'
-model_performance <- function(explainer, ...) {
-  if (!("explainer" %in% class(explainer))) stop("The model_performance() function requires an object created with explain() function.")
-  if (is.null(explainer$data)) stop("The model_performance() function requires explainers created with specified 'data' parameter.")
-  if (is.null(explainer$y)) stop("The model_performance() function requires explainers created with specified 'y' parameter.")
+model_performance <- function(explainer, ..., cutoff = 0.5) {
+  test_explainer(explainer, has_data = TRUE, has_y = TRUE, function_name = "model_performance")
+
   # Check since explain could have been run with precalculate = FALSE
-  if (is.null(explainer$y_hat)){
+  if (is.null(explainer$y_hat)) {
     predicted <- explainer$predict_function(explainer$model, explainer$data, ...)
   } else {
     predicted <- explainer$y_hat
   }
+
   observed <- explainer$y
   # Check since explain could have been run with precalculate = FALSE
-  if (is.null(explainer$residuals)){
-    diff <- predicted - observed
+  if (is.null(explainer$residuals)) {
+    diff <- explainer$residual_function(explainer$model, explainer$data, observed)
   } else {
-    # Negative to save constistency. model_performance used to use `predicted - observed` when explain precalculates `observed - predicted`
-    diff <- -explainer$residuals
+    # changed according to #130
+    diff <- explainer$residuals
   }
 
   residuals <- data.frame(predicted, observed, diff = diff)
 
-  class(residuals) <- c("model_performance_explainer", "data.frame")
+  # get proper measures
+  type <- explainer$model_info$type
+  if (type == "regression") {
+    measures <- list(
+      mse = model_performance_mse(predicted, observed),
+      rmse = model_performance_rmse(predicted, observed),
+      r2 = model_performance_r2(predicted, observed),
+      mad = model_performance_mad(predicted, observed)
+    )
+  } else {
+    tp = sum((observed == 1) * (predicted >= cutoff))
+    fp = sum((observed == 0) * (predicted >= cutoff))
+    tn = sum((observed == 0) * (predicted < cutoff))
+    fn = sum((observed == 1) * (predicted < cutoff))
+
+    measures <- list(
+      recall    = model_performance_recall(tp, fp, tn, fn),
+      precision = model_performance_precision(tp, fp, tn, fn),
+      f1        = model_performance_f1(tp, fp, tn, fn),
+      accuracy  = model_performance_accuracy(tp, fp, tn, fn),
+      auc       = model_performance_auc(predicted, observed)
+    )
+  }
+
   residuals$label <- explainer$label
-  residuals
+
+  structure(list(residuals, measures, type),
+            .Names = c("residuals", "measures", "type"),
+            class = "model_performance")
 }
 
 
-#' Print Model Performance Summary
-#'
-#' @param x a model to be explained, object of the class 'model_performance_explainer'
-#' @param ... other parameters
-#'
-#' @importFrom stats quantile
-#' @export
-#' @examples
-#'  \dontrun{
-#' library("breakDown")
-#' library("randomForest")
-#' HR_rf_model <- randomForest(status == "fired"~., data = HR, ntree = 100)
-#' explainer_rf  <- explain(HR_rf_model, data = HR, y = HR$status == "fired")
-#' mp_ex_rf <- model_performance(explainer_rf)
-#' mp_ex_rf
-#' plot(mp_ex_rf)
-#'  }
-#'
-print.model_performance_explainer <- function(x, ...) {
-  print(quantile(x$diff, seq(0, 1, 0.1)))
+model_performance_mse <- function(predicted, observed) {
+  mean((predicted - observed)^2, na.rm = TRUE)
 }
 
+model_performance_rmse <- function(predicted, observed) {
+  sqrt(mean((predicted - observed)^2, na.rm = TRUE))
+}
+
+model_performance_r2 <- function(predicted, observed) {
+  1 - model_performance_mse(predicted, observed)/model_performance_mse(mean(observed), observed)
+}
+
+model_performance_mad <- function(predicted, observed) {
+  median(abs(predicted - observed))
+}
+
+model_performance_auc <- function(predicted, observed) {
+  pred <- data.frame(fitted.values = predicted, y = observed)
+  pred_sorted <- pred[order(pred$fitted.values, decreasing = TRUE), ]
+
+  # assuming that y = 0/1 where 1 is the positive
+  TPR <- cumsum(pred_sorted$y)/sum(pred_sorted$y)
+  FPR <- cumsum(1-pred_sorted$y)/sum(1-pred_sorted$y)
+
+  auc <- sum(diff(FPR)*(TPR[-1] + TPR[-length(TPR)])/2)
+  auc
+}
+
+model_performance_recall <- function(tp, fp, tn, fn) {
+  tp/(tp + fn)
+}
+
+model_performance_precision <- function(tp, fp, tn, fn) {
+  tp/(tp + fp)
+}
+
+model_performance_f1 <- function(tp, fp, tn, fn) {
+  recall = tp/(tp + fn)
+  precision = tp/(tp + fp)
+  2 * (precision * recall)/(precision + recall)
+}
+
+model_performance_accuracy <- function(tp, fp, tn, fn) {
+  (tp + tn)/(tp + fp + tn + fn)
+}
 

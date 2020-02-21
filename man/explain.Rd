@@ -5,15 +5,37 @@
 \alias{explain}
 \title{Create Model Explainer}
 \usage{
-explain.default(model, data = NULL, y = NULL,
-  predict_function = NULL, residual_function = NULL, weights = NULL,
-  ..., label = NULL, verbose = TRUE, precalculate = TRUE,
-  colorize = TRUE, model_info = NULL)
+explain.default(
+  model,
+  data = NULL,
+  y = NULL,
+  predict_function = NULL,
+  residual_function = NULL,
+  weights = NULL,
+  ...,
+  label = NULL,
+  verbose = TRUE,
+  precalculate = TRUE,
+  colorize = TRUE,
+  model_info = NULL,
+  type = NULL
+)
 
-explain(model, data = NULL, y = NULL, predict_function = NULL,
-  residual_function = NULL, weights = NULL, ..., label = NULL,
-  verbose = TRUE, precalculate = TRUE, colorize = TRUE,
-  model_info = NULL)
+explain(
+  model,
+  data = NULL,
+  y = NULL,
+  predict_function = NULL,
+  residual_function = NULL,
+  weights = NULL,
+  ...,
+  label = NULL,
+  verbose = TRUE,
+  precalculate = TRUE,
+  colorize = TRUE,
+  model_info = NULL,
+  type = NULL
+)
 }
 \arguments{
 \item{model}{object - a model to be explained}
@@ -40,6 +62,8 @@ This will happen also if \code{verbose} is TRUE. Set both \code{verbose} and \co
 \item{colorize}{if TRUE (default) then \code{WARNINGS}, \code{ERRORS} and \code{NOTES} are colorized. Will work only in the R console.}
 
 \item{model_info}{a named list (\code{package}, \code{version}, \code{type}) containg information about model. If \code{NULL}, \code{DALEX} will seek for information on it's own.}
+
+\item{type}{type of a model, either \code{classification} or \code{regression}. If not specified then \code{type} will be extracted from \code{model_info}.}
 }
 \value{
 An object of the class \code{explainer}.
@@ -89,14 +113,14 @@ aps_lm <- explain(aps_lm_model4, data = apartments, label = "model_4v", y = apar
 aps_lm <- explain(aps_lm_model4, data = apartments, label = "model_4v", y = apartments$m2.price,
                                    predict_function = predict)
 # set model_info
-model_info <- list(package = "stats", ver = "3.6.1", type = "regression")
+model_info <- list(package = "stats", ver = "3.6.2", type = "regression")
 aps_lm_model4 <- lm(m2.price ~., data = apartments)
 aps_lm_explainer4 <- explain(aps_lm_model4, data = apartments, label = "model_4v",
                              model_info = model_info)
 
 \dontrun{
 # set model_info
-model_info <- list(package = "stats", ver = "3.6.1", type = "regression")
+model_info <- list(package = "stats", ver = "3.6.2", type = "regression")
 aps_lm_model4 <- lm(m2.price ~., data = apartments)
 aps_lm_explainer4 <- explain(aps_lm_model4, data = apartments, label = "model_4v",
                              model_info = model_info)
@@ -105,10 +129,13 @@ aps_lm_explainer4 <- explain(aps_lm_model4, data = apartments, label = "model_4v
                              weights = as.numeric(apartments$construction.year > 2000))
 
 # more complex model
-library("randomForest")
-aps_rf_model4 <- randomForest(m2.price ~., data = apartments)
-aps_rf_explainer4 <- explain(aps_rf_model4, data = apartments, label = "model_rf")
-aps_rf_explainer4
+library("ranger")
+aps_ranger_model4 <- ranger(m2.price ~., data = apartments, num.trees = 50)
+aps_ranger_explainer4 <- explain(aps_ranger_model4, data = apartments, label = "model_ranger")
+aps_ranger_explainer4
  }
 
+}
+\references{
+Explanatory Model Analysis. Explore, Explain and Examine Predictive Models. \url{https://pbiecek.github.io/ema/}
 }

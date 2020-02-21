@@ -1,3 +1,22 @@
+DALEX 1.0
+----------------------------------------------------------------
+* `variable_profile`  calls `ingredients::ceteris_paribus` ([#131](https://github.com/ModelOriented/DALEX/issues/131)).
+* `variable_response` and `feature_response` moved to `variable_effect` and now it calls `ingredients::partial_dependency` ([#131](https://github.com/ModelOriented/DALEX/issues/131)).
+* `prediction_breakdown` moved to `variable_attribution` and now it calls `iBreakDown::break_down` ([#131](https://github.com/ModelOriented/DALEX/issues/131)).
+* updated `variable_importance`, not it calls the `ingredients::variable_importance` ([#131](https://github.com/ModelOriented/DALEX/issues/131)).
+* updated `model_performance`  ([#130](https://github.com/ModelOriented/DALEX/issues/130)).
+* added `yhat` for `lrm` models from `rms` package
+* `theme_drwhy` has now left aligned title and subtitle.
+* `residuals_distribution` calculates now diagnostic plots based on residuals ([#143](https://github.com/ModelOriented/DALEX/issues/143)).
+* `model_performance` calculates several metrics for classification and regression models ([#146](https://github.com/ModelOriented/DALEX/issues/146)).
+* `plot.model_performance` now supports ROC charts, LIFT charts, Cummulative Gain charts, histograms, boxplots and ecdf 
+* `plot.model_performance` now supports ROC charts, LIFT charts, Cummulative Gain charts, histograms, boxplots and ecdf 
+* `residuals_distributon` is now `individual_diagnostics` and produces objects of the class `individual_diagnostics_explainers`
+* `plot.individual_diagnostics_explainers` now plots objects of the class `individual_diagnostics_explainers`
+* `yhat` for caret models now returns matrix instead of data.frame
+* `model_diagnostics` new function that plots residuals againes selected variable
+* names of functions are changed to be compliant with latest version of the XAI pyramide
+
 DALEX 0.4.9
 ----------------------------------------------------------------
 * updated `titanic_imputed` ([#113](https://github.com/ModelOriented/DALEX/issues/113)).

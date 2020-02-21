@@ -6,11 +6,11 @@ quick.installed.packages <- function() {
 }
 
 .onAttach <- function(...) {
-  addons <- setdiff(c("ingredients", "iBreakDown", "ALEPlot", "breakDown", "pdp", "factorMerger", "ggpubr"),
+  addons <- setdiff(c("ingredients", "iBreakDown", "ggpubr"),
                     quick.installed.packages())
 
   packageStartupMessage("Welcome to DALEX (version: ", utils::packageVersion("DALEX"), ").\n",
-    "Find examples and detailed introduction at: https://pbiecek.github.io/PM_VEE/\n",
+    "Find examples and detailed introduction at: https://pbiecek.github.io/ema/\n",
     ifelse(length(addons) == 0, "",
     paste0( "Additional features will be available after installation of: ",
             paste(addons, collapse = ", "),".\nUse 'install_dependencies()' to get all suggested dependencies"))

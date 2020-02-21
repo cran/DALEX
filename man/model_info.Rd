@@ -12,6 +12,7 @@
 \alias{model_info.gbm}
 \alias{model_info.model_fit}
 \alias{model_info.train}
+\alias{model_info.rpart}
 \alias{model_info.default}
 \title{Exract info from model}
 \usage{
@@ -36,6 +37,8 @@ model_info(model, ...)
 \method{model_info}{model_fit}(model, ...)
 
 \method{model_info}{train}(model, ...)
+
+\method{model_info}{rpart}(model, ...)
 
 \method{model_info}{default}(model, ...)
 }
@@ -69,7 +72,8 @@ are stored
 aps_lm_model4 <- lm(m2.price ~., data = apartments)
 model_info(aps_lm_model4)
 
-model_regr_rf <- randomForest::randomForest(m2.price~., data = apartments, ntree = 50)
+library("ranger")
+model_regr_rf <- ranger::ranger(m2.price~., data = apartments, num.trees = 50)
 model_info(model_regr_rf)
 
 }

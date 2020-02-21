@@ -2,42 +2,54 @@
 % Please edit documentation in R/model_performance.R
 \name{model_performance}
 \alias{model_performance}
-\title{Calculate Model Performance}
+\title{Dataset Level Model Performance Measures}
 \usage{
-model_performance(explainer, ...)
+model_performance(explainer, ..., cutoff = 0.5)
 }
 \arguments{
 \item{explainer}{a model to be explained, preprocessed by the \code{\link{explain}} function}
 
 \item{...}{other parameters}
+
+\item{cutoff}{a cutoff for classification models, needed for measures like recall, precision, ACC, F1. By default 0.5.}
 }
 \value{
-An object of the class \code{model_performance_explainer}.
+An object of the class \code{model_performance}.
 }
 \description{
-Prepare a data frame with model residuals.
+Function \code{model_performance()} calculates various performance measures for classification and regression models.
+For classification models following measures are calculated: F1, accuracy, recall, precision and AUC.
+For regression models following measures are calculated: mean squared error, R squared, median absolute deviation.
 }
 \examples{
  \dontrun{
-library("randomForest")
-HR_rf_model <- randomForest(as.factor(status == "fired")~., data = HR, ntree = 100)
-explainer_rf  <- explain(HR_rf_model, data = HR, y = HR$status == "fired")
+library("ranger")
+titanic_ranger_model <- ranger(survived~., data = titanic_imputed, num.trees = 100,
+                               probability = TRUE)
+# It's a good practice to pass data without target variable
+explainer_ranger  <- explain(titanic_ranger_model, data = titanic_imputed[,-8],
+                             y = titanic_imputed$survived)
 # resulting dataframe has predicted values and residuals
-model_performance(explainer_rf)
+mp_ex_rn <- model_performance(explainer_ranger)
 
-HR_glm_model <- glm(status == "fired"~., data = HR, family = "binomial")
-explainer_glm <- explain(HR_glm_model, data = HR, y = HR$status == "fired",
-                    predict_function = function(m,x) predict.glm(m,x,type = "response"))
+titanic_glm_model <- glm(survived~., data = titanic_imputed, family = "binomial")
+explainer_glm <- explain(titanic_glm_model, data = titanic_imputed[,-8],
+                         y = titanic_imputed$survived,
+                    predict_function = function(m,x) predict.glm(m,x,type = "response"),
+                         label = "glm")
 mp_ex_glm <- model_performance(explainer_glm)
 mp_ex_glm
 plot(mp_ex_glm)
+plot(mp_ex_glm, mp_ex_rn)
 
-HR_lm_model <- lm(status == "fired"~., data = HR)
-explainer_lm <- explain(HR_lm_model, data = HR, y = HR$status == "fired")
-model_performance(explainer_lm)
+titanic_lm_model <- lm(survived~., data = titanic_imputed)
+explainer_lm <- explain(titanic_lm_model, data = titanic_imputed[,-8], y = titanic_imputed$survived)
+mp_ex_lm <- model_performance(explainer_lm)
+plot(mp_ex_lm)
+plot(mp_ex_glm, mp_ex_rn, mp_ex_lm)
  }
 
 }
 \references{
-Predictive Models: Visual Exploration, Explanation and Debugging \url{https://pbiecek.github.io/PM_VEE/}
+Explanatory Model Analysis. Explore, Explain and Examine Predictive Models. \url{https://pbiecek.github.io/ema/}
 }
