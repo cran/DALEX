@@ -5,25 +5,11 @@
 \alias{individual_diagnostics}
 \title{Instance Level Residual Diagnostics}
 \usage{
-predict_diagnostics(
-  explainer,
-  new_observation,
-  variables = NULL,
-  ...,
-  nbins = 20,
-  neighbors = 50,
-  distance = gower::gower_dist
-)
+predict_diagnostics(explainer, new_observation, variables = NULL, ...,
+  nbins = 20, neighbors = 50, distance = gower::gower_dist)
 
-individual_diagnostics(
-  explainer,
-  new_observation,
-  variables = NULL,
-  ...,
-  nbins = 20,
-  neighbors = 50,
-  distance = gower::gower_dist
-)
+individual_diagnostics(explainer, new_observation, variables = NULL, ...,
+  nbins = 20, neighbors = 50, distance = gower::gower_dist)
 }
 \arguments{
 \item{explainer}{a model to be explained, preprocessed by the 'explain' function}

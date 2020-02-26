@@ -4,7 +4,8 @@
 \alias{plot.model_diagnostics}
 \title{Plot Dataset Level Model Diagnostics}
 \usage{
-\method{plot}{model_diagnostics}(x, ..., variable = "y_hat", yvariable = "residuals", smooth = TRUE)
+\method{plot}{model_diagnostics}(x, ..., variable = "y_hat",
+  yvariable = "residuals", smooth = TRUE)
 }
 \arguments{
 \item{x}{a data.frame to be explained, preprocessed by the \code{\link{model_diagnostics}} function}

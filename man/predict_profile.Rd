@@ -5,21 +5,11 @@
 \alias{individual_profile}
 \title{Instance Level Profile as Ceteris Paribus}
 \usage{
-predict_profile(
-  explainer,
-  new_observation,
-  variables = NULL,
-  ...,
-  type = "ceteris_paribus"
-)
+predict_profile(explainer, new_observation, variables = NULL, ...,
+  type = "ceteris_paribus")
 
-individual_profile(
-  explainer,
-  new_observation,
-  variables = NULL,
-  ...,
-  type = "ceteris_paribus"
-)
+individual_profile(explainer, new_observation, variables = NULL, ...,
+  type = "ceteris_paribus")
 }
 \arguments{
 \item{explainer}{a model to be explained, preprocessed by the \code{explain} function}

@@ -6,13 +6,8 @@
 \alias{feature_importance}
 \title{Dataset Level Variable Importance as Change in Loss Function after Variable Permutations}
 \usage{
-model_parts(
-  explainer,
-  loss_function = loss_sum_of_squares,
-  ...,
-  type = "variable_importance",
-  n_sample = 1000
-)
+model_parts(explainer, loss_function = loss_sum_of_squares, ...,
+  type = "variable_importance", n_sample = 1000)
 }
 \arguments{
 \item{explainer}{a model to be explained, preprocessed by the \code{explain} function}
