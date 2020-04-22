@@ -43,9 +43,11 @@ yhat.lm <- function(X.model, newdata, ...) {
 yhat.randomForest <- function(X.model, newdata, ...) {
   if (X.model$type == "classification") {
     pred <- predict(X.model, newdata, type = "prob", ...)
-    if (ncol(pred) == 2) { # binary classification
-      pred <- pred[,2]
-    }
+    # if result is a vector then ncol parameter is null
+    if (is.null(ncol(pred))) return(pred)
+    #  binary classification
+    if (ncol(pred) == 2) return(pred[,2])
+
   } else {
     pred <- predict(X.model, newdata, ...)
   }
@@ -70,12 +72,7 @@ yhat.svm <- function(X.model, newdata, ...) {
 #' @export
 yhat.gbm <- function(X.model, newdata, ...) {
   n.trees <- X.model$n.trees
-  if (X.model$distribution == "bernoulli") {
-    response <- predict(X.model, newdata = newdata, n.trees = n.trees, type = "response")
-  } else {
-    response <- predict(X.model, newdata = newdata, n.trees = n.trees)
-  }
-  response
+  response <- predict(X.model, newdata = newdata, n.trees = n.trees, type = "response")
 }
 
 
@@ -88,13 +85,39 @@ yhat.glm <- function(X.model, newdata, ...) {
 #' @rdname yhat
 #' @export
 yhat.cv.glmnet <- function(X.model, newdata, ...) {
-  predict(X.model, newdata, type = "response")
+  if (!"matrix" %in% class(newdata)) {
+    newdata <- as.matrix(newdata)
+  }
+  if (!is.null(X.model$glmnet.fit$classnames)) {
+    pred <- predict(X.model, newdata, type = "response", s = X.model$lambda[length(X.model$lambda)])
+    if (ncol(pred) == 1) {
+      return(as.numeric(pred))
+    }
+    if (ncol(pred) == 2) {
+      return(pred[,2])
+    }
+  } else {
+    pred <- predict(X.model, newdata, type = "response")
+  }
+  pred
 }
 
 #' @rdname yhat
 #' @export
 yhat.glmnet <- function(X.model, newdata, ...) {
-  predict(X.model, newdata, type = "response")
+  if (!"matrix" %in% class(newdata)) {
+    newdata <- as.matrix(newdata)
+  }
+  if (!is.null(X.model$classnames)) {
+    pred <- predict(X.model, newdata, type = "response", s = X.model$lambda[length(X.model$lambda)])
+  # For binary classifiaction matrix with one column is returned
+    if (ncol(pred) == 1) {
+      return(as.numeric(pred))
+    }
+  } else {
+    pred <- predict(X.model, newdata, type = "response")
+  }
+  pred
 }
 
 #' @rdname yhat
@@ -107,9 +130,10 @@ yhat.ranger <- function(X.model, newdata, ...) {
     pred <- predict(X.model, newdata, ..., probability = TRUE)$predictions
     # if newdata has only one row then the vector needs to be transformed into a matrix
     if (nrow(newdata) == 1) pred <- matrix(pred, nrow = 1)
-    if (ncol(pred) == 2) { # binary classification
-      pred <- pred[,2]
-    }
+    # if result is a vector then ncol parameter is null
+    if (is.null(ncol(pred))) return(pred)
+    # binary classification
+    if (ncol(pred) == 2) return(pred[,2])
   }
   pred
 }

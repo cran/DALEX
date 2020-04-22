@@ -33,6 +33,8 @@ test_that("randomForest", {
   expect_is(explainer_classif_rf$model_info, "model_info")
   expect_is(explainer_regr_rf$y_hat, "numeric")
   expect_is(explainer_regr_rf$model_info, "model_info")
+  expect_length(DALEX:::yhat.randomForest(model_classif_rf, titanic_imputed_cut[1,]), 1)
+  expect_length(DALEX:::yhat.randomForest(model_regr_rf, apartments_cut[1,]), 1)
 
 })
 
@@ -59,6 +61,8 @@ test_that("svm", {
   expect_is(explainer_classif_svm$model_info, "model_info")
   expect_is(explainer_regr_svm$y_hat, "numeric")
   expect_is(explainer_regr_svm$model_info, "model_info")
+  expect_length(DALEX:::yhat.svm(model_classif_svm, titanic_imputed_cut[1,]), 1)
+  expect_length(DALEX:::yhat.svm(model_regr_svm, apartments_cut[1,]), 1)
 
 })
 
@@ -80,28 +84,57 @@ test_that("gbm", {
   expect_is(explainer_classif_gbm$model_info, "model_info")
   expect_is(explainer_regr_gbm$y_hat, "numeric")
   expect_is(explainer_regr_gbm$model_info, "model_info")
+  expect_length(DALEX:::yhat.gbm(model_classif_gbm, titanic_imputed_cut[1,]), 1)
+  expect_length(DALEX:::yhat.gbm(model_regr_gbm, apartments_cut[1,]), 1)
+
 
 })
 
 test_that("glmnet and cvglmnet", {
   #skip_if_no_codecov()
   # model_regr_glm <- glmnet(matrix(rnorm(100 * 20), 100, 20), rnorm(100))
+  # model_classif_glm_bin <- glmnet(matrix(rnorm(100 * 20), 100, 20), as.factor(round(runif(100))), family = "binomial")
+  # model_classif_glm_multi <- glmnet(matrix(rnorm(100 * 20), 100, 20), as.factor(round(runif(100, 0, 2))), family = "multinomial")
   #
   # model_regr_cvglm <- cv.glmnet(matrix(rnorm(100 * 20), 100, 20), rnorm(100))
+  # model_classif_cvglm_bin <- cv.glmnet(matrix(rnorm(100 * 20), 100, 20), as.factor(round(runif(100))), family = "binomial")
   load("./../objects_for_tests/model_regr_glm.RData")
   load("./../objects_for_tests/model_regr_cvglm.RData")
+  load("./../objects_for_tests/model_classif_cvglm_bin.RData")
+  load("./../objects_for_tests/model_classif_glm_bin.RData")
+  load("./../objects_for_tests/model_classif_glm_multi.RData")
 
   # predict.glmnet <- predict.cv.glmnet <- function(X.model, newdata, ...) {
   #   rep(0.14, times = 100)
   # }
 
+  set.seed(123)
   explainer_regr_glm <- explain(model_regr_glm, matrix(rnorm(100 * 20), 100, 20), rnorm(100), verbose = FALSE)
   expect_is(explainer_regr_glm$y_hat, "numeric")
   expect_is(explainer_regr_glm$model_info, "model_info")
+  expect_length(DALEX:::yhat.glm(model_regr_glm, titanic_imputed_cut[1,]), 1)
+
 
   explainer_regr_cvglm <- explain(model_regr_cvglm, matrix(rnorm(100 * 20), 100, 20), rnorm(100), verbose = FALSE)
   expect_is(explainer_regr_cvglm$y_hat, "numeric")
   expect_is(explainer_regr_cvglm$model_info, "model_info")
+  expect_length(DALEX:::yhat.cv.glmnet(model_regr_cvglm, titanic_imputed_cut[1,]), 1)
+
+  explainer_classif_cvglm_bin <- explain(model_classif_cvglm_bin, matrix(rnorm(100 * 20), 100, 20), rnorm(100), verbose = FALSE)
+  expect_is(explainer_regr_glm$y_hat, "numeric")
+  expect_is(explainer_regr_glm$model_info, "model_info")
+  expect_length(DALEX:::yhat.glm(model_regr_glm, titanic_imputed_cut[1,]), 1)
+
+
+  explainer_classif_glm_bin <- explain(model_classif_glm_bin, matrix(rnorm(100 * 20), 100, 20), rnorm(100), verbose = FALSE)
+  expect_is(explainer_regr_cvglm$y_hat, "numeric")
+  expect_is(explainer_regr_cvglm$model_info, "model_info")
+  expect_length(DALEX:::yhat.cv.glmnet(model_regr_cvglm, titanic_imputed_cut[1,]), 1)
+
+  explainer_model_classif_glm_multi <- explain(model_classif_glm_multi, matrix(rnorm(100 * 20), 100, 20), rnorm(100), verbose = FALSE)
+  expect_is(explainer_regr_glm$y_hat, "numeric")
+  expect_is(explainer_regr_glm$model_info, "model_info")
+  expect_length(DALEX:::yhat.glm(model_regr_glm, titanic_imputed_cut[1,]), 1)
 
 })
 
@@ -132,6 +165,8 @@ test_that("parsnip", {
   expect_is(explainer_classif_parsnip$model_info, "model_info")
   expect_is(explainer_regr_parsnip$y_hat, "numeric")
   expect_is(explainer_regr_parsnip$model_info, "model_info")
+  expect_length(DALEX:::yhat.model_fit(parsnip_classif, titanic_imputed_cut[1,]), 1)
+  expect_length(DALEX:::yhat.model_fit(parsnip_regr, apartments_cut[1,]), 1)
 
 })
 
@@ -165,6 +200,8 @@ test_that("caret", {
   expect_is(explainer_regr_caret_lm$y_hat, "numeric")
   expect_is(explainer_regr_caret_lm$model_info, "model_info")
   expect_error(print(explainer_classif_caret$model_info), NA)
+  expect_length(DALEX:::yhat.train(caret_classif, titanic_imputed_cut[1,]), 1)
+  expect_length(DALEX:::yhat.train(caret_regr, apartments_cut[1,]), 1)
 
 })
 
@@ -175,6 +212,7 @@ test_that("glm", {
   explainer_classif_glm <- explain(model_classif_glm, data = HR, verbose = FALSE)
   expect_is(explainer_classif_glm$y_hat, "numeric")
   expect_is(explainer_classif_glm$model_info, "model_info")
+  expect_length(DALEX:::yhat(model_classif_glm, HR[1,]), 1)
 
 
 })
@@ -196,6 +234,10 @@ test_that("rpart", {
   expect_is(explainer_classif_rpart$model_info, "model_info")
   expect_is(explainer_regr_rpart$y_hat, "numeric")
   expect_is(explainer_regr_rpart$model_info, "model_info")
+  expect_length(DALEX:::yhat.rpart(model_classif_rpart, titanic_imputed_cut[1,]), 1)
+  expect_length(DALEX:::yhat.rpart(model_regr_rpart, apartments_cut[1,]), 1)
+
+
 
 })
 
@@ -210,7 +252,16 @@ test_that("yhat default", {
   #   data.frame(rep(0.5, times = 100), rep(0.5, times = 100))
   # }
   expect_is(DALEX:::yhat.default(model_classif_rpart, titanic_imputed_cut), "numeric")
+  expect_length(DALEX:::yhat.default(model_classif_rpart, titanic_imputed_cut[1,]), 1)
+
+  expect_length(DALEX:::yhat.default(model_regr_rpart, apartments_cut[1,]), 1)
   expect_is(DALEX:::yhat.default(model_regr_rpart, apartments_cut), "numeric")
 
+
+})
+
+test_that("yhat ranger", {
+  expect_length(DALEX:::yhat.ranger(model_classif_ranger, titanic_imputed[1,]), 1)
+  expect_length(DALEX:::yhat.ranger(model_regr_ranger, apartments[1,]), 1)
 
 })

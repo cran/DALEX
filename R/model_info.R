@@ -9,15 +9,16 @@
 #'
 #' Currently supported packages are:
 #' \itemize{
-#' \item class `cv.glmnet` and `glmnet` - models created with `glmnet` package
-#' \item class `glm` - generalized linear models
-#' \item class `model_fit` - models created with `parsnip` package
-#' \item class `lm` - linear models created with `stats::lm`
-#' \item class `ranger` - models created with `ranger` package
-#' \item class `randomForest` - random forest models created with `randomForest` package
-#' \item class `svm` - support vector machines models created with the `e1071` package
-#' \item class `train` - models created with `caret` package
-#' \item class `gbm` - models created with `gbm` package
+#' \item class \code{cv.glmnet} and \code{glmnet} - models created with \pkg{glmnet} package
+#' \item class \code{glm} - generalized linear models
+#' \item class \code{lrm} - models created with \pkg{rms} package,
+#' \item class \code{model_fit} - models created with \pkg{parsnip} package
+#' \item class \code{lm} - linear models created with \code{stats::lm}
+#' \item class \code{ranger} - models created with \pkg{ranger} package
+#' \item class \code{randomForest} - random forest models created with \pkg{randomForest} package
+#' \item class \code{svm} - support vector machines models created with the \pkg{e1071} package
+#' \item class \code{train} - models created with \pkg{caret} package
+#' \item class \code{gbm} - models created with \pkg{gbm} package
 #' }
 #'
 #' @return A named list of class \code{model_info}
@@ -77,7 +78,11 @@ model_info.svm <- function(model, ...) {
 #' @rdname model_info
 #' @export
 model_info.glm <- function(model, ...) {
-  type <- "regression"
+  if (model$family$family == "binomial") {
+    type <- "classification"
+  } else {
+    type <- "regression"
+  }
   package <- "stats"
   ver <- get_pkg_ver_safe(package)
   model_info <- list(package = package, ver = ver, type = type)
@@ -85,11 +90,25 @@ model_info.glm <- function(model, ...) {
   model_info
 }
 
+#' @rdname model_info
+#' @export
+model_info.lrm <- function(model, ...) {
+  type <- "classification"
+  package <- "rms"
+  ver <- get_pkg_ver_safe(package)
+  model_info <- list(package = package, ver = ver, type = type)
+  class(model_info) <- "model_info"
+  model_info
+}
 
 #' @rdname model_info
 #' @export
 model_info.glmnet <- function(model, ...) {
-  type <- "regression"
+  if (!is.null(model$classnames)) {
+    type <- "classification"
+  } else {
+    type <- "regression"
+  }
   package <- "glmnet"
   ver <- get_pkg_ver_safe(package)
   model_info <- list(package = package, ver = ver, type = type)
@@ -100,7 +119,11 @@ model_info.glmnet <- function(model, ...) {
 #' @rdname model_info
 #' @export
 model_info.cv.glmnet <- function(model, ...) {
-  type <- "regression"
+  if (!is.null(model$glmnet.fit$classnames)) {
+    type <- "classification"
+  } else {
+    type <- "regression"
+  }
   package <- "glmnet"
   ver <- get_pkg_ver_safe(package)
   model_info <- list(package = package, ver = ver, type = type)
@@ -126,7 +149,7 @@ model_info.ranger <- function(model, ...) {
 #' @rdname model_info
 #' @export
 model_info.gbm <- function(model, ...) {
-  if (model$distribution == "bernoulli") {
+  if (model$distribution == "bernoulli" || model$distribution == "multinomial") {
     type <- "classification"
   } else {
     type <- "regression"

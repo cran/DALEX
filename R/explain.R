@@ -119,13 +119,14 @@ explain.default <- function(model, data = NULL, y = NULL, predict_function = NUL
 
   # REPORT: checks for data
   if (is.null(data)) {
-    n <- 0
     possible_data <- try(model.frame(model), silent = TRUE)
     if (class(possible_data)[1] != "try-error") {
       data <- possible_data
       n <- nrow(data)
       verbose_cat("  -> data              : ", n, " rows ", ncol(data), " cols", color_codes$yellow_start, "extracted from the model", color_codes$yellow_end, "\n", verbose = verbose)
     } else {
+      # Setting 0 as value of n if data is not present is necessary for future checks
+      n <- 0
       verbose_cat("  -> no data avaliable! (",color_codes$red_start,"WARNING",color_codes$red_end,")\n", verbose = verbose)
     }
   } else {
@@ -136,6 +137,16 @@ explain.default <- function(model, data = NULL, y = NULL, predict_function = NUL
   if ("tbl" %in% class(data)) {
     data <- as.data.frame(data)
     verbose_cat("  -> data              :  tibbble converted into a data.frame \n", verbose = verbose)
+  }
+  # as was requested in issue #155, It works becasue if data is NULL, instruction will not be evaluated
+  if ("matrix" %in% class(data) && is.null(rownames(data))) {
+    rownames(data) <- 1:n
+    verbose_cat("  -> data              :  rownames to matrix was added ( from 1 to", n, ") \n", verbose = verbose)
+  }
+  # issue #181 the same as above but for columns
+  if ("matrix" %in% class(data) && is.null(colnames(data))) {
+    colnames(data) <- 1:ncol(data)
+    verbose_cat("  -> data              :  colnames to matrix was added ( from 1 to", ncol(data), ") \n", verbose = verbose)
   }
 
   # REPORT: checks for y present while data is NULL
@@ -161,12 +172,13 @@ explain.default <- function(model, data = NULL, y = NULL, predict_function = NUL
       verbose_cat("  -> target variable   :  Otherwise I will not be able to calculate residuals or loss function.\n", verbose = verbose)
     }
 
-    if (!is.null(data)) {
-      if (is_y_in_data(data, y)) {
-        verbose_cat("  -> data              :  A column identical to the target variable `y` has been found in the `data`.  (",color_codes$red_start,"WARNING",color_codes$red_end,")\n", verbose = verbose)
-        verbose_cat("  -> data              :  It is highly recommended to pass `data` without the target variable column\n", verbose = verbose)
-      }
-    }
+### check removed due to https://github.com/ModelOriented/DALEX/issues/164
+#    if (!is.null(data)) {
+#      if (is_y_in_data(data, y)) {
+#        verbose_cat("  -> data              :  A column identical to the target variable `y` has been found in the `data`.  (",color_codes$red_start,"WARNING",color_codes$red_end,")\n", verbose = verbose)
+#        verbose_cat("  -> data              :  It is highly recommended to pass `data` without the target variable column\n", verbose = verbose)
+#      }
+#    }
   }
 
   # REPORT: checks for weights
@@ -210,7 +222,7 @@ explain.default <- function(model, data = NULL, y = NULL, predict_function = NUL
     class(yhat_functions) = "character"
     matching_yhat <- intersect(paste0("yhat.", class(model)), yhat_functions)
     if (length(matching_yhat) == 0) {
-      verbose_cat("  -> predict function  : yhat.default will be used (",color_codes$yellow_start,"default",color_codes$yellow_end,")\n", verbose = verbose)
+      verbose_cat("  -> predict function  :  yhat.default will be used (",color_codes$yellow_start,"default",color_codes$yellow_end,")\n", verbose = verbose)
     } else {
       verbose_cat("  -> predict function  : ",matching_yhat[1]," will be used (",color_codes$yellow_start,"default",color_codes$yellow_end,")\n", verbose = verbose)
     }
@@ -223,7 +235,7 @@ explain.default <- function(model, data = NULL, y = NULL, predict_function = NUL
   }
   # if data is specified then we may test predict_function
   y_hat <- NULL
-  if (!is.null(data) & !is.null(predict_function) & (verbose | precalculate)) {
+  if (!is.null(data) && !is.null(predict_function) && (verbose | precalculate)) {
     y_hat <- try(predict_function(model, data), silent = TRUE)
     if (class(y_hat)[1] == "try-error") {
       y_hat <- NULL
@@ -258,7 +270,7 @@ explain.default <- function(model, data = NULL, y = NULL, predict_function = NUL
   }
   # if data is specified then we may test residual_function
   residuals <- NULL
-  if (!is.null(data) & !is.null(residual_function) & !is.null(y) & (verbose | precalculate)) {
+  if (!is.null(data) && !is.null(residual_function) && !is.null(y) && (verbose | precalculate)) {
     residuals <- try(residual_function(model, data, y), silent = TRUE)
     if (class(residuals)[1] == "try-error") {
       residuals <- NULL

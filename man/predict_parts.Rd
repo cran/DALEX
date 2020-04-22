@@ -20,8 +20,7 @@ predict_parts_break_down_interactions(explainer, new_observation, ...)
 
 predict_parts_shap(explainer, new_observation, ...)
 
-variable_attribution(explainer, new_observation, ...,
-  type = "break_down")
+variable_attribution(explainer, new_observation, ..., type = "break_down")
 }
 \arguments{
 \item{explainer}{a model to be explained, preprocessed by the 'explain' function}

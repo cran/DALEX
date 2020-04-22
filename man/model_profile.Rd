@@ -6,11 +6,27 @@
 \alias{single_variable}
 \title{Dataset Level Variable Profile as Partial Dependence or Accumulated Local Dependence Explanations}
 \usage{
-model_profile(explainer, variables = NULL, N = 100, ...,
-  groups = NULL, k = NULL, center = TRUE, type = "partial")
+model_profile(
+  explainer,
+  variables = NULL,
+  N = 100,
+  ...,
+  groups = NULL,
+  k = NULL,
+  center = TRUE,
+  type = "partial"
+)
 
-variable_profile(explainer, variables = NULL, N = 100, ...,
-  groups = NULL, k = NULL, center = TRUE, type = "partial")
+variable_profile(
+  explainer,
+  variables = NULL,
+  N = 100,
+  ...,
+  groups = NULL,
+  k = NULL,
+  center = TRUE,
+  type = "partial"
+)
 
 single_variable(explainer, variable, type = "pdp", ...)
 }
