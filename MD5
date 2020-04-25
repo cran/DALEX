@@ -1,9 +1,9 @@
-0cf9467a5b9b985e9b38bf9f83c40b23 *DESCRIPTION
+5af937497d230687cac89d8dd97eb7f9 *DESCRIPTION
 e50f965eb6aac24d17e57a265873de34 *NAMESPACE
 04149167d2e0e334ab17443bed9ffd3c *R/data_HR.R
 4c975a225f6f456ad37695eaacf9cc73 *R/data_apartments.R
 63d222c57f57e1a2d936b467a11e845b *R/data_dragons.R
-90cf09527e8db3e07dc253d184d0c186 *R/data_fifa.R
+31890de340bdceef57fdf06eb2d093db *R/data_fifa.R
 6345eaf11170f8967856de515e817dbe *R/data_titanic.R
 61b424767b15f6131617d6e2020908b9 *R/explain.R
 8282916df59286684914aac039a9f8f2 *R/misc.R
@@ -42,7 +42,7 @@ e5f8dec633fa1a9b7abdcc69d703a0ee *data/apartmentsTest.rda
 f04812d8607883527bc6d74f697d2803 *data/apartments_test.rda
 3ad8529589be39e364cec1d258025617 *data/dragons.rda
 9a488964995c9cef91fafc6250beb938 *data/dragons_test.rda
-4e70e1a9ff6d900d2de417b5d494056e *data/fifa.rda
+d0416209b8cc8f3148a38a45aae47dab *data/fifa.rda
 113bb6d0773dbf7e41c8d1e42d56b99d *data/titanic.rda
 5ff86a2cad6c4b34a9781bdb80cbaee6 *data/titanic_imputed.rda
 e560cb8dbb44f0fddf3f85a6558af64d *inst/CITATION
@@ -51,7 +51,7 @@ e560cb8dbb44f0fddf3f85a6558af64d *inst/CITATION
 fa8d3ee63bcc47963d9c35dbfb832944 *man/colors_drwhy.Rd
 23e1a2d838b9129125dab23501288cad *man/dragons.Rd
 de9586d47c21f52ee10d045dc968b745 *man/explain.Rd
-a547f20a277636297b82a8a6ebb183b2 *man/fifa.Rd
+e9d8bb662988f3277f7e74fb73e40545 *man/fifa.Rd
 ced66fb543c3ab9ae7453fb0d6004af4 *man/figures/logo.png
 668332e5a1a37567af5862a7352de1ab *man/install_dependencies.Rd
 612f76cae793a6a2dbf5bc9f047b2ad2 *man/loss_functions.Rd
@@ -111,4 +111,4 @@ fb88ec82dda00d4203095f6281715481 *tests/testthat/test_predicts.R
 116ec26a4e3d68c73ed0b7aff8727bb4 *tests/testthat/test_variable_attribution.R
 3d5a857c557afbd226dd5dea71df64ca *tests/testthat/test_variable_importance.R
 cba7326cbd16ae5edf0ea82600be7c38 *tests/testthat/test_variable_response.R
-3d6b91ed2b7f361b63e44f6e6a30c400 *tests/testthat/test_yhat_model_info.R
+1eae29d97635f0e6d7d296b886a3f1af *tests/testthat/test_yhat_model_info.R
