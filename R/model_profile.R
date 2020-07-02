@@ -5,14 +5,14 @@
 #' Find information how to use this function here: \url{https://pbiecek.github.io/ema/partialDependenceProfiles.html}.
 #' The \code{variable_profile} function is a copy of \code{model_profile}.
 #'
-#' Underneath this function calls the \code{\link[ingredients]{partial_dependency}} or
-#' \code{\link[ingredients]{accumulated_dependency}} functions from the \code{ingredients} package.
+#' Underneath this function calls the \code{\link[ingredients]{partial_dependence}} or
+#' \code{\link[ingredients]{accumulated_dependence}} functions from the \code{ingredients} package.
 #'
 #' @param explainer a model to be explained, preprocessed by the \code{explain} function
 #' @param ... other parameters that will be passed to \code{ingredients::aggregate_profiles}
 #' @param groups a variable name that will be used for grouping.
 #' By default \code{NULL} which means that no groups shall be calculated
-#' @param N number of observations used for calculation of aggregated profiles. By default 100.
+#' @param N number of observations used for calculation of aggregated profiles. By default \code{100}.
 #' @param k number of clusters for the hclust function (for clustered profiles)
 #' @param center shall profiles be centered before clustering
 #' @param variables character - names of variables to be explained
@@ -86,7 +86,10 @@ model_profile <- function(explainer, variables = NULL, N = 100, ..., groups = NU
   }
 
   # color only for groups
-  color <- if (is.null(k) & is.null(groups)) "#371ea3" else "_label_"
+  # or for multilabel models where agr_profiles$`_label_` > 1
+  color <- if (is.null(k) &
+               is.null(groups) &
+               (length(unique(agr_profiles$`_label_`)) == 1 )) colors_discrete_drwhy(1) else "_label_"
 
   structure(
     list(cp_profiles, agr_profiles, color),

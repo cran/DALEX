@@ -8,22 +8,25 @@
 \usage{
 model_parts(
   explainer,
-  loss_function = loss_sum_of_squares,
+  loss_function = loss_default(explainer$model_info$type),
   ...,
   type = "variable_importance",
+  N = n_sample,
   n_sample = 1000
 )
 }
 \arguments{
 \item{explainer}{a model to be explained, preprocessed by the \code{explain} function}
 
-\item{loss_function}{a function that will be used to assess variable importance}
+\item{loss_function}{a function that will be used to assess variable importance. By default it is 1-AUC for classification, cross entropy for multilabel classification and RMSE for regression.}
 
 \item{...}{other parameters}
 
 \item{type}{character, type of transformation that should be applied for dropout loss. \code{variable_importance} and \code{raw} results raw drop lossess, \code{ratio} returns \code{drop_loss/drop_loss_full_model} while \code{difference} returns \code{drop_loss - drop_loss_full_model}}
 
-\item{n_sample}{number of observations that should be sampled for calculation of variable importance. If negative then variable importance will be calculated on whole dataset (no sampling).}
+\item{N}{number of observations that should be sampled for calculation of variable importance. If negative then variable importance will be calculated on whole dataset (no sampling).}
+
+\item{n_sample}{alias for \code{N} held for backwards compatibility. number of observations that should be sampled for calculation of variable importance.}
 }
 \value{
 An object of the class \code{feature_importance}.
