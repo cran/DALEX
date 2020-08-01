@@ -6,6 +6,8 @@
 \alias{predict_parts_ibreak_down}
 \alias{predict_parts_shap}
 \alias{predict_parts_oscillations}
+\alias{predict_parts_oscillations_uni}
+\alias{predict_parts_oscillations_emp}
 \alias{predict_parts_break_down_interactions}
 \alias{variable_attribution}
 \title{Instance Level Parts of the Model Predictions}
@@ -13,6 +15,22 @@
 predict_parts(explainer, new_observation, ..., type = "break_down")
 
 predict_parts_oscillations(explainer, new_observation, ...)
+
+predict_parts_oscillations_uni(
+  explainer,
+  new_observation,
+  variable_splits_type = "uniform",
+  ...
+)
+
+predict_parts_oscillations_emp(
+  explainer,
+  new_observation,
+  variable_splits = NULL,
+  variables = colnames(explainer$data),
+  N = 500,
+  ...
+)
 
 predict_parts_break_down(explainer, new_observation, ...)
 
@@ -23,53 +41,75 @@ predict_parts_shap(explainer, new_observation, ...)
 variable_attribution(explainer, new_observation, ..., type = "break_down")
 }
 \arguments{
-\item{explainer}{a model to be explained, preprocessed by the 'explain' function}
+\item{explainer}{a model to be explained, preprocessed by the \code{explain} function}
 
-\item{new_observation}{a new observarvation for which predictions need to be explained}
+\item{new_observation}{a new observation for which predictions need to be explained}
 
 \item{...}{other parameters that will be passed to \code{iBreakDown::break_down}}
 
-\item{type}{the type of variable attributions. Either \code{shap}, \code{oscillations}, \code{break_down} or \code{break_down_interactions}.}
+\item{type}{the type of variable attributions. Either \code{shap}, \code{oscillations}, \code{oscillations_uni},
+\code{oscillations_emp}, \code{break_down} or \code{break_down_interactions}.}
+
+\item{variable_splits_type}{how variable grids shall be calculated? Will be passed to \code{\link[ingredients]{ceteris_paribus}}.}
+
+\item{variable_splits}{named list of splits for variables. It is used by oscillations based measures. Will be passed to \code{\link[ingredients]{ceteris_paribus}}.}
+
+\item{variables}{names of variables for which splits shall be calculated. Will be passed to \code{\link[ingredients]{ceteris_paribus}}.}
+
+\item{N}{number of observations used for calculation of oscillations. By default 500.}
 }
 \value{
-Depending on the \code{type} there are different classess of the resulting object.
+Depending on the \code{type} there are different classes of the resulting object.
 It's a data frame with calculated average response.
 }
 \description{
-Instance Level Variable Attributions as Break Down or SHAP Explanations.
+Instance Level Variable Attributions as Break Down, SHAP or Oscillations explanations.
 Model prediction is decomposed into parts that are attributed for particular variables.
 From DALEX version 1.0 this function calls the \code{\link[iBreakDown]{break_down}} or
-\code{\link[iBreakDown:break_down_uncertainty]{shap}} functions from the \code{iBreakDown} package.
-Find information how to use this function here: \url{https://pbiecek.github.io/ema/breakDown.html}.
+\code{\link[iBreakDown:break_down_uncertainty]{shap}} functions from the \code{iBreakDown} package or
+\code{\link[ingredients:ceteris_paribus]{ceteris_paribus}} from the \code{ingredients} package.
+Find information how to use the \code{break_down} method here: \url{https://pbiecek.github.io/ema/breakDown.html}.
+Find information how to use the \code{shap} method here: \url{https://pbiecek.github.io/ema/shapley.html}.
+Find information how to use the \code{oscillations} method here: \url{https://pbiecek.github.io/ema/ceterisParibusOscillations.html}.
 }
 \examples{
-new_dragon <- data.frame(year_of_birth = 200,
-     height = 80,
-     weight = 12.5,
-     scars = 0,
-     number_of_lost_teeth  = 5)
+library(DALEX)
 
-dragon_lm_model4 <- lm(life_length ~ year_of_birth + height +
-                                     weight + scars + number_of_lost_teeth,
-                       data = dragons)
-dragon_lm_explainer4 <- explain(dragon_lm_model4, data = dragons, y = dragons$year_of_birth,
-                                label = "model_4v")
-dragon_lm_predict4 <- predict_parts_break_down(dragon_lm_explainer4,
-                new_observation = new_dragon)
-head(dragon_lm_predict4)
-plot(dragon_lm_predict4)
+new_dragon <- data.frame(
+    year_of_birth = 200,
+    height = 80,
+    weight = 12.5,
+    scars = 0,
+    number_of_lost_teeth  = 5
+)
+
+model_lm <- lm(life_length ~ year_of_birth + height +
+               weight + scars + number_of_lost_teeth,
+               data = dragons)
+
+explainer_lm <- explain(model_lm,
+                        data = dragons,
+                        y = dragons$year_of_birth,
+                        label = "model_lm")
+
+bd_lm <- predict_parts_break_down(explainer_lm, new_observation = new_dragon)
+head(bd_lm)
+plot(bd_lm)
 
 \dontrun{
 library("ranger")
-dragon_ranger_model4 <- ranger(life_length ~ year_of_birth + height +
-                                               weight + scars + number_of_lost_teeth,
-                                 data = dragons, num.trees = 50)
-dragon_ranger_explainer4 <- explain(dragon_ranger_model4, data = dragons, y = dragons$year_of_birth,
-                                label = "model_ranger")
-dragon_ranger_predict4 <- predict_parts_break_down(dragon_ranger_explainer4,
-                                                          new_observation = new_dragon)
-head(dragon_ranger_predict4)
-plot(dragon_ranger_predict4)
+model_ranger <- ranger(life_length ~ year_of_birth + height +
+                       weight + scars + number_of_lost_teeth,
+                       data = dragons, num.trees = 50)
+
+explainer_ranger <- explain(model_ranger,
+                            data = dragons,
+                            y = dragons$year_of_birth,
+                            label = "model_ranger")
+
+bd_ranger <- predict_parts_break_down(explainer_ranger, new_observation = new_dragon)
+head(bd_ranger)
+plot(bd_ranger)
 }
 
 }
