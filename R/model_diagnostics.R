@@ -1,7 +1,7 @@
 #' Dataset Level Model Diagnostics
 #'
 #' This function performs model diagnostic of residuals.
-#' Residuals are calculated and ploted against predictions, true y values or selected variables.
+#' Residuals are calculated and plotted against predictions, true y values or selected variables.
 #' Find information how to use this function here: \url{https://pbiecek.github.io/ema/residualDiagnostic.html}.
 #'
 #' @param explainer a model to be explained, preprocessed by the \code{explain} function
@@ -11,7 +11,7 @@
 #' @return An object of the class \code{model_diagnostics}.
 #' It's a data frame with residuals and selected variables.
 #'
-#' @references Explanatory Model Analysis. Explore, Explain and Examine Predictive Models. \url{https://pbiecek.github.io/ema/}
+#' @references Explanatory Model Analysis. Explore, Explain, and Examine Predictive Models. \url{https://pbiecek.github.io/ema/}
 #' @export
 #' @examples
 #' apartments_lm_model <- lm(m2.price ~ ., data = apartments)
@@ -60,7 +60,11 @@ model_diagnostics <-  function(explainer, variables = NULL, ...) {
   if (is.null(dim(explainer$y_hat))) {
     results$y_hat <- explainer$y_hat
   } else {
-    results$y_hat <- explainer$y_hat[, 1] # this will work only for first column
+    if ("array" %in% class(explainer$y_hat) && length(dim(explainer$y_hat)) == 1) {
+      results$y_hat <- as.vector(explainer$y_hat)
+    } else {
+      results$y_hat <- explainer$y_hat[, 1] # this will work only for first column
+    }
   }
 
   # are there residuals
@@ -70,7 +74,11 @@ model_diagnostics <-  function(explainer, variables = NULL, ...) {
   if (is.null(dim(explainer$residuals))) {
     results$residuals <- explainer$residuals
   } else {
-    results$residuals <- explainer$residuals[, 1] # this will work only for first column
+    if ("array" %in% class(explainer$residuals) && length(dim(explainer$residuals)) == 1) {
+      results$residuals <- as.vector(explainer$residuals)
+    } else {
+      results$residuals <- explainer$residuals[, 1] # this will work only for first column
+    }
   }
   results$abs_residuals <- abs(results$residuals)
   results$label <- explainer$label
