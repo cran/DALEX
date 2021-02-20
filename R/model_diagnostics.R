@@ -2,7 +2,7 @@
 #'
 #' This function performs model diagnostic of residuals.
 #' Residuals are calculated and plotted against predictions, true y values or selected variables.
-#' Find information how to use this function here: \url{https://pbiecek.github.io/ema/residualDiagnostic.html}.
+#' Find information how to use this function here: \url{http://ema.drwhy.ai/residualDiagnostic.html}.
 #'
 #' @param explainer a model to be explained, preprocessed by the \code{explain} function
 #' @param variables character - name of variables to be explained. Default \code{NULL} stands for all variables
@@ -11,9 +11,10 @@
 #' @return An object of the class \code{model_diagnostics}.
 #' It's a data frame with residuals and selected variables.
 #'
-#' @references Explanatory Model Analysis. Explore, Explain, and Examine Predictive Models. \url{https://pbiecek.github.io/ema/}
+#' @references Explanatory Model Analysis. Explore, Explain and Examine Predictive Models. \url{http://ema.drwhy.ai/}
 #' @export
 #' @examples
+#' library(DALEX)
 #' apartments_lm_model <- lm(m2.price ~ ., data = apartments)
 #' explainer_lm <- explain(apartments_lm_model,
 #'                          data = apartments,
@@ -45,9 +46,9 @@ model_diagnostics <-  function(explainer, variables = NULL, ...) {
   # if variables = NULL then all variables are added
   # otherwise only selected
   if (is.null(variables)) {
-    results <- explainer$data
+    results <- as.data.frame(explainer$data)
   } else {
-    results <- explainer$data[, intersect(variables, colnames(explainer$data)), drop = FALSE]
+    results <- as.data.frame(explainer$data[, intersect(variables, colnames(explainer$data)), drop = FALSE])
   }
   # is there target
   if (!is.null(explainer$y)) {
@@ -80,6 +81,7 @@ model_diagnostics <-  function(explainer, variables = NULL, ...) {
       results$residuals <- explainer$residuals[, 1] # this will work only for first column
     }
   }
+
   results$abs_residuals <- abs(results$residuals)
   results$label <- explainer$label
   results$ids <- seq_along(results$label)
