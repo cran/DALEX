@@ -114,6 +114,7 @@ aps_lm <- explain(aps_lm_model4, data = apartments, label = "model_4v", y = apar
 aps_lm <- explain(aps_lm_model4, data = apartments, label = "model_4v", y = apartments$m2.price,
                                    predict_function = predict)
 
+\donttest{
 # user provided predict_function
 aps_ranger <- ranger::ranger(m2.price~., data = apartments, num.trees = 50)
 custom_predict <- function(X.model, newdata) {
@@ -138,9 +139,9 @@ titanic_ranger <- ranger::ranger(as.factor(survived)~., data = titanic_imputed, 
 # keep in mind that for binary classification y parameter has to be numeric  with 0 and 1 values
 titanic_ranger_exp <- explain(titanic_ranger, data = titanic_imputed, y = titanic_imputed$survived)
 
-# multilabel classification
+# multiclass task
 hr_ranger <- ranger::ranger(status~., data = HR, num.trees = 50, probability = TRUE)
-# keep in mind that for multilabel classification y parameter has to be a factor,
+# keep in mind that for multiclass y parameter has to be a factor,
 # with same levels as in training data
 hr_ranger_exp <- explain(hr_ranger, data = HR, y = HR$status)
 
@@ -150,7 +151,6 @@ aps_lm_model4 <- lm(m2.price ~., data = apartments)
 aps_lm_explainer4 <- explain(aps_lm_model4, data = apartments, label = "model_4v",
                              model_info = model_info)
 
-\donttest{
 # simple function
 aps_fun <- function(x) 58*x$surface
 aps_fun_explainer <- explain(aps_fun, data = apartments, y = apartments$m2.price, label="sfun")
@@ -174,5 +174,5 @@ aps_ranger_explainer4
 
 }
 \references{
-Explanatory Model Analysis. Explore, Explain and Examine Predictive Models. \url{http://ema.drwhy.ai/}
+Explanatory Model Analysis. Explore, Explain and Examine Predictive Models. \url{https://ema.drwhy.ai/}
 }
