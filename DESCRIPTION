@@ -1,6 +1,6 @@
 Package: DALEX
 Title: moDel Agnostic Language for Exploration and eXplanation
-Version: 2.4.0
+Version: 2.4.1
 Authors@R: c(person("Przemyslaw", "Biecek", email = "przemyslaw.biecek@gmail.com", role = c("aut", "cre"), 
              comment = c(ORCID = "0000-0001-8423-1823")),
     person("Szymon", "Maksymiuk", role = "aut",
@@ -22,17 +22,17 @@ Description: Any unverified black box model is the path to failure. Opaqueness l
 License: GPL
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.0
 Depends: R (>= 3.5)
 Imports: ggplot2, iBreakDown (>= 1.3.1), ingredients (>= 2.0)
-Suggests: gower, ranger, testthat, methods
-URL: https://dalex.drwhy.ai, https://github.com/ModelOriented/DALEX
+Suggests: gower, ranger, yardstick, testthat, methods
+URL: https://modeloriented.github.io/DALEX/, https://dalex.drwhy.ai
 BugReports: https://github.com/ModelOriented/DALEX/issues
 NeedsCompilation: no
-Packaged: 2022-02-21 15:04:23 UTC; pbiecek
+Packaged: 2022-05-21 07:46:50 UTC; pbiecek
 Author: Przemyslaw Biecek [aut, cre] (<https://orcid.org/0000-0001-8423-1823>),
   Szymon Maksymiuk [aut] (<https://orcid.org/0000-0002-3120-1601>),
   Hubert Baniecki [aut] (<https://orcid.org/0000-0001-6661-5364>)
 Maintainer: Przemyslaw Biecek <przemyslaw.biecek@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-02-21 16:00:13 UTC
+Date/Publication: 2022-05-21 10:00:02 UTC
