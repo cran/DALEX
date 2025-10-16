@@ -1,4 +1,4 @@
-d2b9271f794e1b2b8698fde671f79309 *DESCRIPTION
+0cf9638bf45646064c46e60453e7f5db *DESCRIPTION
 ad480f06cf2527993996860ebabab299 *NAMESPACE
 04149167d2e0e334ab17443bed9ffd3c *R/data_HR.R
 4c975a225f6f456ad37695eaacf9cc73 *R/data_apartments.R
@@ -12,7 +12,7 @@ c748440676cd1014fc09eff9e9608479 *R/misc.R
 7464451bffc03709e144421ea4928ea6 *R/misc_install_dependencies.R
 1fd984c609e8a6b1bf1a17eeff88473c *R/misc_loss_functions.R
 1633b9169317d13dc8e894ce05d23558 *R/misc_set_theme_dalex.R
-7f4e3ab764177ec9f715f831f9455c7e *R/misc_theme_drwhy.R
+0db96e41c9a513f737de885b2386b730 *R/misc_theme_drwhy.R
 d73e13c43efeaee08373b967d01e2bc8 *R/misc_update.R
 059a3442daa32632e2c5a610d1133569 *R/misc_yhat.R
 4dcd69b72d7e11145be485151c2bccf2 *R/model_diagnostics.R
@@ -22,7 +22,7 @@ d50ac1999da7d0776145ac85f3a88fb3 *R/model_performance.R
 caaaab6fab36bbd9d36ac3c6b9302491 *R/model_profile.R
 9184f0161a997a777bda846e2f4bf911 *R/model_variable_effect.R
 a0fa68fe0c28d6d881bef26952b6a713 *R/plot_list.R
-47ae67976d6032c13dbe44c2cd9d7897 *R/plot_model_diagnostics.R
+3097cf14d118a0f8444d8d4c8b563fdd *R/plot_model_diagnostics.R
 70d50a4aafe66ae6a6a809fb970bdb13 *R/plot_model_parts.R
 e42153c849a4fe03373b935f05b9e7e3 *R/plot_model_performance.R
 707d0110fb24a723ef7a8c09382f071a *R/plot_model_profile.R

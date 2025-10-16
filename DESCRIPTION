@@ -1,6 +1,6 @@
 Package: DALEX
 Title: moDel Agnostic Language for Exploration and eXplanation
-Version: 2.5.2
+Version: 2.5.3
 Authors@R: c(person("Przemyslaw", "Biecek", email = "przemyslaw.biecek@gmail.com", role = c("aut", "cre"), 
              comment = c(ORCID = "0000-0001-8423-1823")),
     person("Szymon", "Maksymiuk", role = "aut",
@@ -30,11 +30,11 @@ Suggests: gower, ranger, testthat, methods
 URL: https://modeloriented.github.io/DALEX/, https://dalex.drwhy.ai
 BugReports: https://github.com/ModelOriented/DALEX/issues
 NeedsCompilation: no
-Packaged: 2025-07-27 19:24:41 UTC; pbiecek
+Packaged: 2025-10-16 06:32:45 UTC; pbiecek
 Author: Przemyslaw Biecek [aut, cre] (ORCID:
     <https://orcid.org/0000-0001-8423-1823>),
   Szymon Maksymiuk [aut] (ORCID: <https://orcid.org/0000-0002-3120-1601>),
   Hubert Baniecki [aut] (ORCID: <https://orcid.org/0000-0001-6661-5364>)
 Maintainer: Przemyslaw Biecek <przemyslaw.biecek@gmail.com>
 Repository: CRAN
-Date/Publication: 2025-07-27 20:10:02 UTC
+Date/Publication: 2025-10-16 07:30:07 UTC

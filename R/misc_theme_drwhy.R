@@ -12,14 +12,14 @@ theme_drwhy <- function() {
           legend.direction = "horizontal", legend.position = "top",
           axis.line.y = element_line(color = "white"),
           axis.ticks.y = element_line(color = "white"),
-          #axis.line = element_line(color = "#371ea3", size = 0.5, linetype = 1),
+          #axis.line = element_line(color = "#371ea3", linewidth = 0.5, linetype = 1),
           axis.title = element_text(color = "#371ea3"),
           plot.title = element_text(color = "#371ea3", size = 16, hjust = 0),
           plot.subtitle = element_text(color = "#371ea3", hjust = 0),
           axis.text = element_text(color = "#371ea3", size = 10),
           strip.text = element_text(color = "#371ea3", size = 12, hjust = 0),
-          panel.grid.major.y = element_line(color = "grey90", size = 0.5, linetype = 1),
-          panel.grid.minor.y = element_line(color = "grey90", size = 0.5,  linetype = 1),
+          panel.grid.major.y = element_line(color = "grey90", linewidth = 0.5, linetype = 1),
+          panel.grid.minor.y = element_line(color = "grey90", linewidth = 0.5,  linetype = 1),
           panel.grid.minor.x = element_blank(),
           panel.grid.major.x = element_blank())
 
@@ -54,12 +54,12 @@ theme_drwhy_vertical <- function() {
           axis.ticks.x = element_line(color = "white"),
           plot.title = element_text(color = "#371ea3", size = 16, hjust = 0),
           plot.subtitle = element_text(color = "#371ea3", hjust = 0),
-          #axis.line = element_line(color = "#371ea3", size = 0.5, linetype = 1),
+          #axis.line = element_line(color = "#371ea3", linewidth = 0.5, linetype = 1),
           axis.title = element_text(color = "#371ea3"),
           axis.text = element_text(color = "#371ea3", size = 10),
           strip.text = element_text(color = "#371ea3", size = 12, hjust = 0),
-          panel.grid.major.x = element_line(color = "grey90", size = 0.5, linetype = 1),
-          panel.grid.minor.x = element_line(color = "grey90", size = 0.5,  linetype = 1),
+          panel.grid.major.x = element_line(color = "grey90", linewidth = 0.5, linetype = 1),
+          panel.grid.minor.x = element_line(color = "grey90", linewidth = 0.5,  linetype = 1),
           panel.grid.minor.y = element_blank(),
           panel.grid.major.y = element_blank())
 }
